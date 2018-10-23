@@ -34,22 +34,31 @@ public class Student implements Serializable{
 	
 	public int getYearOfAdmission() { return yearOfAdmission; }
 	
-	public void registerTut(Course course, int index) {
-		course.registerTut(this, index);
-		if (! transcript.containsKey(course))
-			transcript.put(course, new StudentRecord(course));
+	public boolean registerTut(Course course, int index) {
+		if (course.registerTut(this, index)) {
+			if (! transcript.containsKey(course))
+				transcript.put(course, new StudentRecord(course));
+			return true;
+		}
+		return false;
 	}
 	
-	public void registerLab(Course course, int index) {
-		course.registerLab(this, index);
-		if (! transcript.containsKey(course))
-			transcript.put(course, new StudentRecord(course));
+	public boolean registerLab(Course course, int index) {
+		if (course.registerLab(this, index)) {
+			if (! transcript.containsKey(course))
+				transcript.put(course, new StudentRecord(course));
+			return true;
+		}
+		return false;
 	}
 	
-	public void registerLec(Course course, int index) {
-		course.registerLec(this, index);
-		if (! transcript.containsKey(course))
-			transcript.put(course, new StudentRecord(course));
+	public boolean registerLec(Course course, int index) {
+		if (course.registerLec(this, index)) {
+			if (! transcript.containsKey(course))
+				transcript.put(course, new StudentRecord(course));
+			return true;
+		}
+		return false;
 	}
 	
 	public void enterGrade(Course course, int i, double grade) {
@@ -71,14 +80,4 @@ public class Student implements Serializable{
 	public int hashCode() {
 		return NRIC.hashCode();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
