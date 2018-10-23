@@ -21,7 +21,7 @@ public class ManageApp {
 			System.out.println("4.Check available slot in class");
 			System.out.println("5.Print student list by lecture, tutorial or laboratory session for a course");
 			System.out.println("6.Enter course assessment components weightage");
-			System.out.println("7.Enter coursework mark – inclusive of its components");
+			System.out.println("7.Enter coursework mark â€“ inclusive of its components");
 			System.out.println("8.Enter exam mark");
 			System.out.println("9.Print course statistics");
 			System.out.println("10.Print student transcript");
@@ -32,13 +32,14 @@ public class ManageApp {
 			case 1: 
 				while (true) {
 					System.out.println("Enter student name:");
+					sc.nextLine();
 					name = sc.nextLine();
 					System.out.println("Enter NRIC:");
 					NRIC = sc.nextLine();
 					if (studentList.containsKey(NRIC)) {
 						System.out.println("This student may already be inserted before since the same NRIC is found in the record");
-						break;
 					}
+					break;
 				}
 				System.out.println("Enter major:");
 				major = sc.nextLine();
@@ -48,7 +49,7 @@ public class ManageApp {
 				yearOfAdmission = sc.nextInt();
 				studentList.put(Student.noOfStudents+1,new Student(name,NRIC,yearOfBirth,yearOfAdmission,NRIC));
 				break;
-			case 2: addCourse(courseList, profList); break;
+			case 2: addCourse(courseList, profList, sc); break;
 			case 3: //registerStudent(int studentId, String courseCode); break;
 			case 4: //check(String courseCode); break;
 			case 5: //printStudentList(String courseCode); break;
@@ -81,13 +82,13 @@ public class ManageApp {
 		return pDetails;
 	}
 	
-	public static void addCourse(HashMap<String, Course> s, ArrayList<Professor> p) {
-		Scanner scan = new Scanner(System.in);
+	public static void addCourse(HashMap<String, Course> s, ArrayList<Professor> p, Scanner scan) {
 		int courseStructure;
 		boolean valid = false;
 		String profName;
 		Professor prof = null;
 		System.out.println("Enter course name:");
+		scan.nextLine();
 		String name = scan.nextLine();
 		System.out.println("Enter courseCode:");
 		String courseCode = scan.nextLine();
@@ -164,7 +165,6 @@ public class ManageApp {
 			s.get(courseCode).createLab(noOfLab, capacity);
 			
 		}
-		scan.close();
 	}
 	
 	public static void registerStudent(int matricNo, Course course) {
