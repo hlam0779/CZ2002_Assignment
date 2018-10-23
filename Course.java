@@ -42,6 +42,8 @@ public class Course implements Serializable{
 		}	
 	}
 	
+	public int getCourseStructure() { return courseStructure; }
+	
 	public String getCourseCode() { return courseCode; }
 	
 	public String getName() { return name; }
@@ -109,7 +111,7 @@ public class Course implements Serializable{
 	
 	public boolean registerLec(Student s, int lecId) {
 		if (lecStudents.contains(s)) {
-			System.out.println("This student has already successfully registered for certain lab session of this course before");
+			System.out.println("This student has already successfully registered for certain lecture session of this course before");
 			return false;
 		}
 		if (lecId<0 || lecId>=lecs.size()) {
