@@ -34,7 +34,7 @@ public class Course implements Serializable{
 			this.tuts = new ArrayList<Tutorial>();
 			this.tutStudents = new HashSet<Student>();
 		}
-		else if (courseStructure == 1){
+		else if (courseStructure == 3){
 			this.tuts = new ArrayList<Tutorial>();
 			this.labs = new ArrayList<Lab>();
 			this.tutStudents = new HashSet<Student>();
