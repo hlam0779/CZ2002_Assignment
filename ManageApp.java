@@ -156,15 +156,17 @@ public class ManageApp {
 			s.get(courseCode).createLec(noOfLecs, capacity);
 			System.out.println("Enter the number of tutorials for this course:");
 			int noOfTut = scan.nextInt();
-			System.out.println("Enter the capacity for these tutorial");
+			System.out.println("Enter the capacity for these tutorial:");
 			capacity = scan.nextInt();
 			s.get(courseCode).createTut(noOfTut, capacity);
 			System.out.println("Enter the number of lab sessions for this course:");
 			int noOfLab = scan.nextInt();
 			System.out.println("Enter the capacity for these lab sessions:");
+			capacity = scan.nextInt();
 			s.get(courseCode).createLab(noOfLab, capacity);
 			
 		}
+		
 	}
 	
 	public static void registerStudent(int matricNo, Course course) {
