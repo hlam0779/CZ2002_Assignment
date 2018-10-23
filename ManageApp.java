@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.*;
@@ -50,7 +51,7 @@ public class ManageApp {
 				studentList.put(Student.noOfStudents+1,new Student(name,NRIC,yearOfBirth,yearOfAdmission,NRIC));
 				break;
 			case 2: addCourse(courseList, profList, sc); break;
-			case 3: //registerStudent(int studentId, String courseCode); break;
+			case 3: registerStudent(studentList, courseList, sc); break;
 			case 4: //check(String courseCode); break;
 			case 5: //printStudentList(String courseCode); break;
 			case 6: //enterAssessmentComponentsWeightage(String courseCode); break;
@@ -164,12 +165,59 @@ public class ManageApp {
 			System.out.println("Enter the capacity for these lab sessions:");
 			capacity = scan.nextInt();
 			s.get(courseCode).createLab(noOfLab, capacity);
-			
 		}
 		
 	}
 	
-	public static void registerStudent(int matricNo, Course course) {
-		
+	public static void registerStudent(HashMap<Integer,Student> studentList, HashMap<String,Course> courseList, Scanner scan) {
+		System.out.printf("Enter the student matric number (1-%d):\n", Student.noOfStudents);
+		int matricNo = scan.nextInt();
+		Student s = studentList.get(matricNo);
+		System.out.println("Enter the course code:");
+		scan.nextLine();
+		String courseCode = scan.nextLine();
+		Course course = courseList.get(courseCode);
+		System.out.printf("Enter the desired lecture index for this course (0-%d):\n", course.getLecs().size()-1);
+		while (true) {
+			try {
+				int lecId = scan.nextInt();
+				if ( (!s.registerLec(course, lecId)) && (! course.getLecStudents().contains(s))) {
+					System.out.println("Please choose another index:");
+				}
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid index, please choose a valid index:");
+			}
+		}
+		if (course.getCourseStructure() == 1)
+			return;
+		System.out.printf("Enter the desired tutorial index for this course (0-%d):\n", course.getTuts().size()-1);
+		while (true) {
+			try {
+				int tutId = scan.nextInt();
+				if ( (! s.registerTut(course, tutId)) && (! course.getTutStudents().contains(s))) {
+					System.out.println("Please choose another index:");
+					continue;
+				}
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid index, please choose a valid index:");
+			}
+		}
+		if (course.getCourseStructure() == 2)
+			return;
+		System.out.printf("Enter the desired lab session index for this course (0-%d):\n", course.getLabs().size()-1);
+		while (true) {
+			try {
+				int labId = scan.nextInt();
+				if ( (! s.registerLab(course, labId)) && (! course.getLabStudents().contains(s))) {
+					System.out.println( "Please choose another index:");
+					continue;
+				}
+				break;
+			}catch (InputMismatchException e){
+				System.out.println("Invalid index, please choose a valid index:");
+			}
+		}
 	}
 }
