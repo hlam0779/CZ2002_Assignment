@@ -8,19 +8,23 @@ import java.io.*;
 
 public class ManageApp {
 	
+	public static Data data;
+	public static HashMap<String,Student> studentList;
+	public static HashMap<String,Course> courseList;
+	public static ArrayList<Professor> profList;
+	private static Scanner scan;
+
 	public static void main(String[] args) {
 		String profFile = "professor.dat";
 		String dataFile = "data.dat";
 		
 		//Read data from external soure or create one if file does not exist
-		Data data = (Data) SerializeDB.readSerializedDataObject(dataFile);
-		HashMap<String,Student> studentList = data.getStudentList();
-		HashMap<String,Course> courseList = data.getCourseList();
-		ArrayList<Professor> profList = (ArrayList<Professor>) SerializeDB.readSerializedListObject(profFile);
+		data = (Data) SerializeDB.readSerializedDataObject(dataFile);
+		studentList = data.getStudentList();
+		courseList = data.getCourseList();
+		profList = (ArrayList<Professor>) SerializeDB.readSerializedListObject(profFile);
+		scan = new Scanner(System.in);
 		
-		String name, major, matricNo;
-		int yearOfBirth, yearOfAdmission;
-		Scanner sc = new Scanner(System.in);
 		int choice;
 		do {
 			System.out.println("1.Add a student");
@@ -36,7 +40,7 @@ public class ManageApp {
 			System.out.println("11.Exit");
 			while (true) {
 				try {
-					choice = sc.nextInt();
+					choice = scan.nextInt();
 					if (choice<1 || choice >11) {
 						System.out.println("Your choice must be between 1 and 11, please input again:");
 						continue;
@@ -44,97 +48,93 @@ public class ManageApp {
 					break;
 				} catch (InputMismatchException e) {
 					System.out.println("Invalid choice, please input your choice again:");
-					sc.nextLine();
+					scan.nextLine();
 				}
 			}
 				
 			
 			switch(choice) {
-			case 1: 
-				boolean valid = false;	//indicating whether the student is already in the record
-				
-				//Input student information to add to record
-				System.out.println("Enter student name:");
-				sc.nextLine();
-				name = sc.nextLine();
-				System.out.println("Enter matric Number:");
-				matricNo = sc.nextLine();
-				if (studentList.containsKey(matricNo)) {
-					System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
-					valid = true;
-				}
-				
-				//break if the student is already in the record
-				if (valid) break;
-				
-				System.out.println("Enter major:");
-				major = sc.nextLine();
-				System.out.println("Enter year of birth:");
-				
-				while (true) { //Check for valid input
-					try {
-						yearOfBirth = sc.nextInt();
-						break;
-					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input year of birth again:");
-						sc.nextLine();
-					}
-				}
-				
-				System.out.println("Enter year of admission:");
-	
-				while (true) { //Check for valid input
-					try {
-						yearOfAdmission = sc.nextInt();
-						break;
-					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input year of admission again:");
-						sc.nextLine();
-					}
-				}
-				
-				//Add student to the record
-				studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
-				break;
-			case 2: addCourse(courseList, profList, sc); break;
-			case 3: registerStudent(studentList, courseList, sc); break;
-			case 4: checkVacancies(courseList, sc); break;
-			case 5: printStudentList(courseList, sc); break;
-			case 6: setAssessmentComponentsWeightage(courseList, sc); break;
-			case 7: enterCourseworkMark(studentList, courseList, sc); break;
-			case 8: enterExamMark(studentList, courseList, sc); break;
-			case 9: printCourseStatistics(courseList, sc); break;
-			case 10: printStudentTranscript(studentList, sc); break;
-			default: System.out.println("Program terminated");
+				case 1: addStudent(); break;
+				case 2: addCourse(); break;
+				case 3: registerStudent(); break;
+				case 4: checkVacancies(); break;
+				case 5: printStudentList(); break;
+				case 6: setAssessmentComponentsWeightage(); break;
+				case 7: enterCourseworkMark(); break;
+				case 8: enterExamMark(); break;
+				case 9: printCourseStatistics(); break;
+				case 10: printStudentTranscript(); break;
+				default: System.out.println("Program terminated");
 			}
 			} while (choice >= 1 && choice<11);
 		SerializeDB.writeSerializedDataObject(dataFile, data);
-		sc.close();
+		scan.close();
 		}
 	
+	public static void addStudent() {
+		boolean valid = false;	//indicating whether the student is already in the record
+		
+		//Input student information to add to record
+		System.out.println("Enter student name:");
+		scan.nextLine();
+		String name = scan.nextLine();
+		System.out.println("Enter matric Number:");
+		String matricNo = scan.nextLine();
+		if (studentList.containsKey(matricNo)) {
+			System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
+			valid = true;
+		}
+		
+		if (valid) return;
+		
+		System.out.println("Enter major:");
+		String major = scan.nextLine();
+		System.out.println("Enter year of birth:");
+		int yearOfBirth,yearOfAdmission;
+		while (true) { //Check for valid input
+			try {
+				yearOfBirth = scan.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, please input year of birth again:");
+				scan.nextLine();
+			}
+		}
+		
+		System.out.println("Enter year of admission:");
+		while (true) { //Check for valid input
+			try {
+				yearOfAdmission = scan.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, please input year of admission again:");
+				scan.nextLine();
+			}
+		}
+		
+		studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
+	}
 	
-	public static void addCourse(HashMap<String, Course> s, ArrayList<Professor> p, Scanner scan) {
-		int courseStructure;
-		String profName;
+	public static void addCourse() {
 		boolean valid = false;  //indicating whether the input professor name is in the record
-		Professor prof = null;
 		
 		//Input course information to add to the record
 		System.out.println("Enter course name:");
 		scan.nextLine();
 		String name = scan.nextLine();
 		System.out.println("Enter courseCode:");
-		String courseCode;
-		courseCode = scan.nextLine();
-		if (s.containsKey(courseCode)) {	//Check whether the same course has already be inserted before
+		String courseCode = scan.nextLine();
+		if (courseList.containsKey(courseCode)) {	//Check whether the same course has already be inserted before
 			System.out.println("This course may already be inserted before since the same course code is found in the record\n");
 			return;
 		}
 		
+		String profName;
+		Professor prof = null;
 		while (true){	//Ensure the valid input of professor name
 			System.out.println("Enter cordinator name:");
 			profName = scan.nextLine();
-			for (Professor i: p) {
+			for (Professor i: profList) {
 				if (i.getName().equals(profName)) {
 					prof = i;
 					valid = true;
@@ -146,6 +146,7 @@ public class ManageApp {
 			else System.out.println("There is no professor whose name is "+profName+", please choose another name:");
 		}
 		
+		int courseStructure;
 		while (true) {	//Check for valid input
 			try {
 				System.out.println("Choose course structure(1-3):");
@@ -163,51 +164,41 @@ public class ManageApp {
 			}
 		}
 		
+		
+		System.out.println("Enter the number of lectures for this course:");
+		int noOfLecs = scan.nextInt();
+		System.out.println("Enter the capacity for these lecture:");
+		int lecCapacity = scan.nextInt();
 		if (courseStructure == 1) {
-			s.put(courseCode, new Course(name, courseCode, prof, courseStructure));
-			System.out.println("Enter the number of lectures for this course:");
-			int noOfLecs = scan.nextInt();
-			System.out.println("Enter the capacity for these lecture:");
-			int capacity = scan.nextInt();
-			s.get(courseCode).createLec(noOfLecs, capacity);
+			courseList.put(courseCode, new Course(name, courseCode, prof, 1));
+			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
 		}
 		else if (courseStructure == 2){
-			s.put(courseCode,  new Course(name, courseCode, prof, courseStructure));
-			s.put(courseCode, new Course(name, courseCode, prof, courseStructure));
-			System.out.println("Enter the number of lectures for this course:");
-			int noOfLecs = scan.nextInt();
-			System.out.println("Enter the capacity for these lectures:");
-			int capacity = scan.nextInt();
-			s.get(courseCode).createLec(noOfLecs, capacity);
 			System.out.println("Enter the number of tutorials for this course:");
-			int noOfTut = scan.nextInt();
+			int noOfTuts = scan.nextInt();
 			System.out.println("Enter the capacity for these tutorial:");
-			capacity = scan.nextInt();
-			s.get(courseCode).createTut(noOfTut, capacity);
+			int tutCapacity = scan.nextInt();
+			courseList.put(courseCode, new Course(name, courseCode, prof, 2));
+			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
+			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
 		}
 		else {
-			s.put(courseCode,  new Course(name, courseCode, prof, courseStructure));
-			s.put(courseCode, new Course(name, courseCode, prof, courseStructure));
-			System.out.println("Enter the number of lectures for this course:");
-			int noOfLecs = scan.nextInt();
-			System.out.println("Enter the capacity for these lectures:");
-			int capacity = scan.nextInt();
-			s.get(courseCode).createLec(noOfLecs, capacity);
 			System.out.println("Enter the number of tutorials for this course:");
-			int noOfTut = scan.nextInt();
+			int noOfTuts = scan.nextInt();
 			System.out.println("Enter the capacity for these tutorial:");
-			capacity = scan.nextInt();
-			s.get(courseCode).createTut(noOfTut, capacity);
+			int tutCapacity = scan.nextInt();
 			System.out.println("Enter the number of lab sessions for this course:");
-			int noOfLab = scan.nextInt();
+			int noOfLabs = scan.nextInt();
 			System.out.println("Enter the capacity for these lab sessions:");
-			capacity = scan.nextInt();
-			s.get(courseCode).createLab(noOfLab, capacity);
+			int labCapacity = scan.nextInt();
+			courseList.put(courseCode, new Course(name, courseCode, prof, 3));
+			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
+			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
+			courseList.get(courseCode).createLab(noOfLabs, labCapacity);
 		}
-		
 	}
 	
-	public static void registerStudent(HashMap<String,Student> studentList, HashMap<String,Course> courseList, Scanner scan) {
+	public static void registerStudent() {
 		//Check whether there is any student to register
 		if (studentList.size() == 0) {
 			System.out.println("There is no students in the record to register, please add students first\n");
@@ -218,11 +209,12 @@ public class ManageApp {
 			System.out.println("There is no courses in the record to register, please add courses first\n");
 			return;
 		}
-		
-		//Input thematric number of the corresponding student to register
+		String matricNo, courseCode;
+		Course course;
+		Student student;
+		//Input the matric number of the corresponding student to register
 		System.out.println("Enter the student matric number:");
 		scan.nextLine();
-		String matricNo;
 		while (true) {
 			matricNo = scan.nextLine();
 			if (! studentList.containsKey(matricNo)) {
@@ -230,13 +222,11 @@ public class ManageApp {
 				continue;
 			}
 			break;
-			
 		}
-		Student s = studentList.get(matricNo);
+		student = studentList.get(matricNo);
 		
 		//Input the course code of the corresponding course to register
 		System.out.println("Enter the course code:");
-		String courseCode;
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
@@ -245,11 +235,17 @@ public class ManageApp {
 			}
 			break;
 		}
-		Course course = courseList.get(courseCode);
+		course = courseList.get(courseCode);
 		
-		//Check whether the student has already registerd for this course
-		if (course.getStudents().contains(s)) {
+		//Check whether the student has already registered for this course
+		if (course.getStudents().contains(student)) {
 			System.out.println("This student has successfully registered this course before\n");
+			return;
+		}
+		
+		//Check vacancies of the input course and break out the switch statement if there is no vacancies
+		if (! course.hasVacancies()) {
+			System.out.println("This course has no more vacancies\n");
 			return;
 		}
 		
@@ -262,7 +258,7 @@ public class ManageApp {
 		while (true) {
 			try {
 				int lecId = scan.nextInt();
-				if ( ! s.registerLec(course, lecId)) {
+				if ( ! student.registerLec(courseCode, lecId)) {
 					System.out.println("Please choose another index:");
 					continue;
 				}
@@ -278,7 +274,7 @@ public class ManageApp {
 		while (true) {
 			try {
 				int tutId = scan.nextInt();
-				if ( ! s.registerTut(course, tutId) ) {
+				if ( ! student.registerTut(courseCode, tutId) ) {
 					System.out.println("Please choose another index:");
 					continue;
 				}
@@ -294,7 +290,7 @@ public class ManageApp {
 		while (true) {
 			try {
 				int labId = scan.nextInt();
-				if ( ! s.registerLab(course, labId)) {
+				if ( ! student.registerLab(courseCode, labId)) {
 					System.out.println( "Please choose another index:");
 					continue;
 				}
@@ -306,7 +302,7 @@ public class ManageApp {
 		}
 	}
 	
-	public static void checkVacancies(HashMap<String,Course> courseList, Scanner scan) {
+	public static void checkVacancies() {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
@@ -314,7 +310,7 @@ public class ManageApp {
 			return;
 		}
 		
-		//Input the course code of the corressponding course to check
+		//Input the course code of the corresponding course to check
 		System.out.println("Enter course code:");
 		scan.nextLine();
 		String courseCode;
@@ -416,7 +412,7 @@ public class ManageApp {
 		}
 	}
 	
-	public static void printStudentList(HashMap<String,Course> courseList, Scanner scan) {
+	public static void printStudentList() {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
@@ -546,7 +542,7 @@ public class ManageApp {
 		}
 	}
 	
-	public static void setAssessmentComponentsWeightage(HashMap<String,Course> courseList, Scanner scan) {
+	public static void setAssessmentComponentsWeightage() {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
@@ -605,14 +601,14 @@ public class ManageApp {
 		course.setAssignmentWeight(assignmentWeight);
 	}
 	
-	public static void enterCourseworkMark(HashMap<String,Student> studentList, HashMap<String,Course> courseList, Scanner scan) {
+	public static void enterCourseworkMark() {
 		
 		//Check whether there is any student in the record
 		if (studentList.size() == 0) {
 			System.out.println("There is no students in the record, please add students first\n");
 			return;
 		}
-		//Check whether thereis any course in the record
+		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
 			System.out.println("There is no courses in the record, please add courses first\n");
 			return;
@@ -690,7 +686,7 @@ public class ManageApp {
 		System.out.println();
 	}
 	
-	public static void enterExamMark(HashMap<String, Student> studentList, HashMap<String,Course> courseList, Scanner scan) {
+	public static void enterExamMark() {
 		
 		//Check whether is any student in the record
 		if (studentList.size() == 0) {
@@ -758,7 +754,7 @@ public class ManageApp {
 		System.out.println();
 	}
 	
-	public static void printCourseStatistics(HashMap<String,Course> courseList, Scanner scan) {
+	public static void printCourseStatistics() {
 		if (courseList.size() == 0) {
 			System.out.println("There is no courses in the record, please add courses first\n");
 			return;
@@ -798,7 +794,7 @@ public class ManageApp {
 		}
 	}
 	
-	public static void printStudentTranscript(HashMap<String,Student> studentList, Scanner scan) {
+	public static void printStudentTranscript() {
 		if (studentList.size() == 0) {
 			System.out.println("There is no student in the record, please add student first:");
 			return;
