@@ -6,11 +6,13 @@ public class Lab implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -9019537250606693375L;
+	private Course course;
 	private int labId;
 	private HashSet<Student> students;
 	private int capacity;
 	
-	public Lab(int labId, int capacity) {
+	public Lab(Course course, int labId, int capacity) {
+		this.course = course;
 		this.labId = labId;
 		this.capacity = capacity;
 		this.students = new HashSet<Student>();
@@ -34,6 +36,7 @@ public class Lab implements Serializable{
 		//Check vacancies
 		if (capacity > currentOccupied()) {
 			this.students.add(s);
+			course.reduceLabVacancies();
 			System.out.println("Successfully register this student for this lab session\n");
 			return true;
 		}
