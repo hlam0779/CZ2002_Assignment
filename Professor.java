@@ -1,6 +1,10 @@
 import java.io.Serializable;
 
 public class Professor implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3914670736074682579L;
 	private String name ;
 	private String email ;
 	private int contact ;
@@ -20,5 +24,9 @@ public class Professor implements Serializable {
 			return (getName().equals(p.getName()));
 		}
 		return false;
+	}
+	
+	public String toString(){
+		return name;
 	}
 }
