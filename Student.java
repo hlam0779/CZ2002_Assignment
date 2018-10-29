@@ -3,30 +3,32 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class Student implements Serializable{
-	private String name;
-	private String NRIC;
-	private int matricNo;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1110733458217604607L;
+	private String name;								
+	private String matricNo;							
 	private int yearOfBirth;
 	private String major;
 	private int yearOfAdmission;
-	private HashMap<Course,StudentRecord>  transcript;
+	private HashMap<Course,GradeRecord>  transcript;
 	public static int noOfStudents;
 	
 	
-	public Student(String name, String NRIC, int yearOfBirth, int yearOfAdmission, String major) {
+	public Student(String name, String matricNo, int yearOfBirth, int yearOfAdmission, String major) {
 		this.name = name;
-		this.NRIC = NRIC;
+		this.matricNo = matricNo;
 		this.yearOfBirth = yearOfBirth;
 		this.major = major;
 		this.yearOfAdmission = yearOfAdmission;
-		this.transcript = new HashMap<Course,StudentRecord>();
+		this.transcript = new HashMap<Course,GradeRecord>();
 		noOfStudents++;
-		this.matricNo = noOfStudents;
 	}
 	
 	public String getName() { return name;  }
 	
-	public String getNRIC() { return NRIC; }
+	public String getMatric() { return matricNo; }
 	
 	public String getMajor() { return major; }
 	
@@ -34,10 +36,12 @@ public class Student implements Serializable{
 	
 	public int getYearOfAdmission() { return yearOfAdmission; }
 	
+	public HashMap<Course,GradeRecord> getTranscript() { return transcript; }
+	
 	public boolean registerTut(Course course, int index) {
 		if (course.registerTut(this, index)) {
 			if (! transcript.containsKey(course))
-				transcript.put(course, new StudentRecord(course));
+				transcript.put(course, new GradeRecord(course));
 			return true;
 		}
 		return false;
@@ -46,7 +50,7 @@ public class Student implements Serializable{
 	public boolean registerLab(Course course, int index) {
 		if (course.registerLab(this, index)) {
 			if (! transcript.containsKey(course))
-				transcript.put(course, new StudentRecord(course));
+				transcript.put(course, new GradeRecord(course));
 			return true;
 		}
 		return false;
@@ -55,7 +59,7 @@ public class Student implements Serializable{
 	public boolean registerLec(Course course, int index) {
 		if (course.registerLec(this, index)) {
 			if (! transcript.containsKey(course))
-				transcript.put(course, new StudentRecord(course));
+				transcript.put(course, new GradeRecord(course));
 			return true;
 		}
 		return false;
@@ -70,14 +74,26 @@ public class Student implements Serializable{
 			transcript.get(course).setExam(grade);
 	}
 	
+	//Print student information, this is used for printing student list by lectures, tutorials and lab sessions in the printStudentList method of ManageApp
+	@Override
+	public String toString() {
+		return "Name: "+name+"    MatricNumber:  "+matricNo+ "    Major: "+major;
+	}
+	
+	//Two students are the same if they have the same matric number
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Student) )
 			return false;
 		Student s = (Student) o;
-		return (this.NRIC.equals(s.getNRIC()));
+		return (this.matricNo.equals(s.getMatric()));
 	}
 	
+	//This is used to hash students into HashMap or HashSet object using matric number
+	@Override
 	public int hashCode() {
-		return NRIC.hashCode();
+		if (this.matricNo == null)
+			return super.hashCode();
+		return this.matricNo.hashCode();
 	}
 }
