@@ -38,7 +38,8 @@ public class Student implements Serializable{
 	
 	public HashMap<Course,GradeRecord> getTranscript() { return transcript; }
 	
-	public boolean registerTut(Course course, int index) {
+	public boolean registerTut(String courseCode, int index) {
+		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerTut(this, index)) {
 			if (! transcript.containsKey(course))
 				transcript.put(course, new GradeRecord(course));
@@ -47,7 +48,8 @@ public class Student implements Serializable{
 		return false;
 	}
 	
-	public boolean registerLab(Course course, int index) {
+	public boolean registerLab(String courseCode, int index) {
+		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerLab(this, index)) {
 			if (! transcript.containsKey(course))
 				transcript.put(course, new GradeRecord(course));
@@ -56,7 +58,8 @@ public class Student implements Serializable{
 		return false;
 	}
 	
-	public boolean registerLec(Course course, int index) {
+	public boolean registerLec(String courseCode, int index) {
+		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerLec(this, index)) {
 			if (! transcript.containsKey(course))
 				transcript.put(course, new GradeRecord(course));
