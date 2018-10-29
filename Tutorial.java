@@ -6,11 +6,13 @@ public class Tutorial implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -6595084104792911570L;
+	private Course course;
 	private int tutId;
 	private int capacity;
 	private HashSet<Student> students;
 	
-	public Tutorial(int tutId, int capacity) {
+	public Tutorial(Course course, int tutId, int capacity) {
+		this.course = course;
 		this.tutId = tutId;
 		this.students = new HashSet<Student>();
 		this.capacity = capacity;
@@ -31,9 +33,10 @@ public class Tutorial implements Serializable{
 	 */
 	public boolean addStudent(Student s) {
 		
-		//Check vacancies
+		//Check vacancies of this tutorial
 		if (capacity > currentOccupied()) {
 			this.students.add(s);
+			course.reduceTutVacancies();
 			System.out.println("Successfully register this student for this tutorial\n");
 			return true;
 		}
