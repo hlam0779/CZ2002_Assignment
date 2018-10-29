@@ -25,7 +25,10 @@ public class Course implements Serializable{
 	private HashSet<Student> Students;				//Students who has registered this course
 	private ArrayList<Lecture> lecs;				//Lectures of this course
 	private ArrayList<Tutorial> tuts;				//Tutorials of this course
-	private ArrayList<Lab> labs;					//Lab sessions of this course	
+	private ArrayList<Lab> labs;					//Lab sessions of this course
+	private int totalLecVacancies;
+	private int totalTutVacancies;
+	private int totalLabVacancies;
 	
 	public Course(String name, String courseCode, Professor prof, int courseStructure) {
 		this.name = name;
@@ -38,11 +41,16 @@ public class Course implements Serializable{
 		this.labs = null;
 		this.alreadyAddAsessmentWeight = false;
 		this.alreadyAddSubComponentWeightOfCoursework = false;
-		if (courseStructure == 2)
+		totalLecVacancies = 0;
+		if (courseStructure == 2) {
 			this.tuts = new ArrayList<Tutorial>();
+			totalTutVacancies = 0;
+		}
 		else if (courseStructure == 3){
 			this.tuts = new ArrayList<Tutorial>();
 			this.labs = new ArrayList<Lab>();
+			totalTutVacancies = 0;
+			totalLabVacancies = 0;
 		}	
 	}
 	
@@ -66,17 +74,40 @@ public class Course implements Serializable{
 	
 	public void createTut(int noOfTut, int capacity) {
 		for (int i=0; i<noOfTut; i++)
-			this.tuts.add(new Tutorial(this.tuts.size(), capacity));
+			this.tuts.add(new Tutorial(this, this.tuts.size(), capacity));
+		totalTutVacancies = noOfTut*capacity;
 	}
 	
 	public void createLab(int noOfLab, int capacity) {
 		for (int i=0; i<noOfLab; i++)
-			this.labs.add(new Lab(this.labs.size(), capacity));
+			this.labs.add(new Lab(this, this.labs.size(), capacity));
+		totalLabVacancies = noOfLab*capacity;
 	}
 	
 	public void createLec(int noOfLec, int capacity) {
 		for (int i=0; i<noOfLec; i++)
-			this.lecs.add(new Lecture(this.lecs.size(), capacity));
+			this.lecs.add(new Lecture(this, this.lecs.size(), capacity));
+		totalLecVacancies = noOfLec*capacity;
+	}
+	
+	public void reduceLecVacancies() {
+		totalLecVacancies--;
+	}
+	
+	public void reduceTutVacancies() {
+		totalTutVacancies--;
+	}
+	
+	public void reduceLabVacancies() {
+		totalLabVacancies--;
+	}
+	
+	public boolean hasVacancies() {
+		if (courseStructure == 1)
+			return ! (totalLecVacancies == 0);
+		if (courseStructure == 2)
+			return ! (totalLecVacancies == 0 || totalTutVacancies == 0);
+		return ! (totalLecVacancies == 0 || totalTutVacancies == 0 || totalLabVacancies == 0);
 	}
 	
 	public boolean registerTut(Student s, int tutId) {
