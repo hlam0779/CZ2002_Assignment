@@ -21,5 +21,4 @@ public class Data implements Serializable {
 	public HashMap<String,Course> getCourseList(){
 		return courseList;
 	}
-
 }
