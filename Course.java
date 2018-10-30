@@ -11,7 +11,7 @@ public class Course implements Serializable{
 	private String name;						
 	private String courseCode;
 	private int courseStructure;					//There are three types of course structure representing by three number 1,2 and 3
-	private Professor cordinator;					//Cordinator of this course
+	private Professor coordinator;					//Coordinator of this course
 	private double courseworkWeight;				//Asessment weight of coursework for this course (unit: percent(%))
 	private double examWeight;						//Asessment weight of exam for this course (unit: percent(%))
 	private double assignmentWeight;				//Asessment weight of assignment for coursework of this course (unit: percent(%))
@@ -34,7 +34,7 @@ public class Course implements Serializable{
 	public Course(String name, String courseCode, Professor prof, int courseStructure) {
 		this.name = name;
 		this.courseCode = courseCode;
-		this.cordinator = prof;
+		this.coordinator = prof;
 		this.courseStructure = courseStructure;
 		this.lecs = new ArrayList<Lecture>();
 		this.Students = new HashSet<Student>();
@@ -61,7 +61,7 @@ public class Course implements Serializable{
 	
 	public String getName() { return name; }
 	
-	public Professor getCordinator() { return cordinator; }
+	public Professor getCoordinator() { return coordinator; }
 	
 	public ArrayList<Tutorial> getTuts() { return tuts; }
 	
@@ -226,5 +226,4 @@ public class Course implements Serializable{
 	public String toString() {
 		return this.name+"("+this.courseCode+")";
 	}
-	
 }
