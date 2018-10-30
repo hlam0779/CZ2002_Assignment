@@ -112,7 +112,7 @@ public class GradeRecord implements Serializable{
 	@Override
 	public String toString() {
 		if (calOverallGrade())
-			return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+"/100"+"    OverallGrade:" +overallGrade+"/100";
+			return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
 		return "Course: "+course+"    status: "+message;
 	}
 }
