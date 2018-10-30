@@ -18,9 +18,9 @@ public class GradeRecord implements Serializable{
 	private String message;							/*This will be printed to inform the error when trying to 
 													 *get access to the grade that has not been successfully calculated
 													 */
-	private boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
-	private boolean alreadyEnterClassParticipationGrade;	//(true if grade has already been entered by some administrator and
-	private boolean alreadyEnterExamGrade;					//false otherwise
+	public boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
+	public boolean alreadyEnterClassParticipationGrade;	//(true if grade has already been entered by some administrator and
+	public boolean alreadyEnterExamGrade;				//false otherwise, these variables are set to public for convenience
 	
 	
 	public GradeRecord(Course course) {
