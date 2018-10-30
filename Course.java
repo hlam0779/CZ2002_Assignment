@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.Serializable;
 
+
 public class Course implements Serializable{
 	/**
 	 * 
@@ -138,8 +139,13 @@ public class Course implements Serializable{
 		return this.alreadyAddSubComponentWeightOfCoursework;
 	}
 	
+	public int getVancancies() {
+		return Math.min(totalLecVacancies, Math.min(totalTutVacancies, totalLabVacancies));
+	}
+	
 	/* Register student to a specific lab index of this course 
-	 * Return true if successfully register, and false otherwise*/
+	 * Return true if successfully register, and false otherwise
+	 */
 	public boolean registerLab(Student s, int labId) {
 		
 		//Check to ensure legal lab index
@@ -177,7 +183,8 @@ public class Course implements Serializable{
 	}
 	
 	
-	/*set coursework and exam weight and update assessment weight status 
+	/*
+	 * Set coursework and exam weight and update assessment weight status 
 	 * by set true the corresponding boolean variable
 	 */
 	public void setCourseworkWeight(double weight) {
@@ -201,6 +208,8 @@ public class Course implements Serializable{
 	//Two course are the same if either it has the same course code 
 	@Override
 	public boolean equals(Object o) {
+		if (! (o instanceof Course))
+			return false;
 		Course c = (Course) o;
 		if (this.courseCode.equals(c.getCourseCode()))
 			return true;
@@ -210,8 +219,6 @@ public class Course implements Serializable{
 	//This is used to hash the course to the HashMap or HashSet Object
 	@Override
 	public int hashCode() {
-		if (this.courseCode == null)
-			return super.hashCode();
 		return this.courseCode.hashCode();
 	}
 	
