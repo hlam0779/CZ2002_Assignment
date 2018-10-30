@@ -202,7 +202,7 @@ public class Course implements Serializable{
 		this.assignmentWeight = weight;
 		this.classParticipationWeight = 100.0-weight;
 		this.alreadyAddSubComponentWeightOfCoursework = true;
-		System.out.println("The class participation weight of the coursework is automatically set to "+this.classParticipationWeight+"\n");
+		System.out.println("The class participation weight of the coursework is automatically set to "+this.classParticipationWeight);
 	}
 	
 	//Two course are the same if either it has the same course code 
