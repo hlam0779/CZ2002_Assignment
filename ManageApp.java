@@ -38,7 +38,8 @@ public class ManageApp {
 			System.out.println("9.Print course statistics");
 			System.out.println("10.Print student transcript");
 			System.out.println("11.Exit");
-			while (true) {
+			
+			while (true) {		//Check for valid choice
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice >11) {
@@ -72,26 +73,26 @@ public class ManageApp {
 		}
 	
 	public static void addStudent() {
-		boolean valid = false;	//indicating whether the student is already in the record
 		
+		scan.nextLine();
 		//Input student information to add to record
 		System.out.println("Enter student name:");
-		scan.nextLine();
 		String name = scan.nextLine();
 		System.out.println("Enter matric Number:");
 		String matricNo = scan.nextLine();
+		
+		//Check if the student is already in the record
 		if (studentList.containsKey(matricNo)) {
 			System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
-			valid = true;
+			return;
 		}
 		
-		if (valid) return;
 		
 		System.out.println("Enter major:");
 		String major = scan.nextLine();
 		System.out.println("Enter year of birth:");
 		int yearOfBirth,yearOfAdmission;
-		while (true) { //Check for valid input
+		while (true) {		//Check for valid input
 			try {
 				yearOfBirth = scan.nextInt();
 				break;
@@ -102,7 +103,7 @@ public class ManageApp {
 		}
 		
 		System.out.println("Enter year of admission:");
-		while (true) { //Check for valid input
+		while (true) {		//Check for valid input
 			try {
 				yearOfAdmission = scan.nextInt();
 				break;
@@ -113,10 +114,10 @@ public class ManageApp {
 		}
 		
 		studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
+		System.out.println("Successfully add student\n");
 	}
 	
 	public static void addCourse() {
-		boolean valid = false;  //indicating whether the input professor name is in the record
 		
 		//Input course information to add to the record
 		System.out.println("Enter course name:");
@@ -128,10 +129,11 @@ public class ManageApp {
 			System.out.println("This course may already be inserted before since the same course code is found in the record\n");
 			return;
 		}
-		
+		//Input professor name to assign to this course's cordinator
 		String profName;
 		Professor prof = null;
-		while (true){	//Ensure the valid input of professor name
+		boolean valid = false;  //indicating whether the input professor name is in the record
+		while (true){		//Ensure the valid input of professor name
 			System.out.println("Enter cordinator name:");
 			profName = scan.nextLine();
 			for (Professor i: profList) {
@@ -146,8 +148,9 @@ public class ManageApp {
 			else System.out.println("There is no professor whose name is "+profName+", please choose another name:");
 		}
 		
+		//Input the course structure
 		int courseStructure;
-		while (true) {	//Check for valid input
+		while (true) {		//Check for valid input
 			try {
 				System.out.println("Choose course structure(1-3):");
 				System.out.println("1.Course only has lectures");
@@ -155,42 +158,57 @@ public class ManageApp {
 				System.out.println("3.Course has lectures, tutorial and laboratory sessions");
 				if (scan.hasNextInt())
 					courseStructure = scan.nextInt();
-				else throw new Exception("Invalid choice");
-				if (courseStructure<1 || courseStructure >3)
+				else {
+					scan.nextLine();
 					throw new Exception("Invalid choice");
+				}
+				if (courseStructure<1 || courseStructure >3)
+					throw new Exception("Invalid choice, your choice must be between 1 and 3");
 				break;
 			} catch (Exception e){
 				System.out.println(e.getMessage());
 			}
 		}
 		
-		
+		//Input number of lectures and the corresponding capacity
 		System.out.println("Enter the number of lectures for this course:");
 		int noOfLecs = scan.nextInt();
 		System.out.println("Enter the capacity for these lecture:");
 		int lecCapacity = scan.nextInt();
 		if (courseStructure == 1) {
+			
+			//Create new course object and add to course list
 			courseList.put(courseCode, new Course(name, courseCode, prof, 1));
 			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
 		}
 		else if (courseStructure == 2){
+			
+			//Input number of tutorials and the corresponding capacity
 			System.out.println("Enter the number of tutorials for this course:");
 			int noOfTuts = scan.nextInt();
 			System.out.println("Enter the capacity for these tutorial:");
 			int tutCapacity = scan.nextInt();
+			
+			//Create new course object and add to course list
 			courseList.put(courseCode, new Course(name, courseCode, prof, 2));
 			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
 			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
 		}
 		else {
+			
+			//Input number of tutorials and the corresponding capacity
 			System.out.println("Enter the number of tutorials for this course:");
 			int noOfTuts = scan.nextInt();
 			System.out.println("Enter the capacity for these tutorial:");
 			int tutCapacity = scan.nextInt();
+			
+			//Input number of lectures and the corresponding capacity
 			System.out.println("Enter the number of lab sessions for this course:");
 			int noOfLabs = scan.nextInt();
 			System.out.println("Enter the capacity for these lab sessions:");
 			int labCapacity = scan.nextInt();
+			
+			//Create new course object and add to course list
 			courseList.put(courseCode, new Course(name, courseCode, prof, 3));
 			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
 			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
@@ -199,20 +217,21 @@ public class ManageApp {
 	}
 	
 	public static void registerStudent() {
+		
 		//Check whether there is any student to register
 		if (studentList.size() == 0) {
 			System.out.println("There is no students in the record to register, please add students first\n");
 			return;
 		}
+		
 		//Check whether there is any course to register
 		if(courseList.size() == 0) {
 			System.out.println("There is no courses in the record to register, please add courses first\n");
 			return;
 		}
-		String matricNo, courseCode;
-		Course course;
-		Student student;
+		
 		//Input the matric number of the corresponding student to register
+		String matricNo, courseCode;
 		System.out.println("Enter the student matric number:");
 		scan.nextLine();
 		while (true) {
@@ -223,7 +242,7 @@ public class ManageApp {
 			}
 			break;
 		}
-		student = studentList.get(matricNo);
+		Student student = studentList.get(matricNo);
 		
 		//Input the course code of the corresponding course to register
 		System.out.println("Enter the course code:");
@@ -235,7 +254,7 @@ public class ManageApp {
 			}
 			break;
 		}
-		course = courseList.get(courseCode);
+		Course course = courseList.get(courseCode);
 		
 		//Check whether the student has already registered for this course
 		if (course.getStudents().contains(student)) {
@@ -243,19 +262,22 @@ public class ManageApp {
 			return;
 		}
 		
-		//Check vacancies of the input course and break out the switch statement if there is no vacancies
+		//Check vacancies and return if the course has no available vacancies
 		if (! course.hasVacancies()) {
 			System.out.println("This course has no more vacancies\n");
 			return;
 		}
 		
 		/*
-		 * The remaining code segment will register student to specific index of course component
+		 * The remaining code segment will register student to specific index of course components
 		 * based on the course structure
 		 */
 		
+		//Input the lecture index to register
 		System.out.printf("Enter the desired lecture index for this course (0-%d):\n", course.getLecs().size()-1);
-		while (true) {
+		
+		while (true) {		//Ask for input another lecture index if the lecture index has no vacancies or the index is invalid
+			
 			try {
 				int lecId = scan.nextInt();
 				if ( ! student.registerLec(courseCode, lecId)) {
@@ -268,10 +290,16 @@ public class ManageApp {
 				scan.nextLine();
 			}
 		}
+		
+		//Return if the course only has lectures
 		if (course.getCourseStructure() == 1)
 			return;
+		
+		//Input the tutorial index to register
 		System.out.printf("Enter the desired tutorial index for this course (0-%d):\n", course.getTuts().size()-1);
-		while (true) {
+		
+		while (true) {		//Ask for input another tutorial index if the tutorial index has no vacancies or the index is invalid
+			
 			try {
 				int tutId = scan.nextInt();
 				if ( ! student.registerTut(courseCode, tutId) ) {
@@ -284,10 +312,16 @@ public class ManageApp {
 				scan.nextLine();
 			}
 		}
+		
+		//Return if the course only has lectures and tutorials
 		if (course.getCourseStructure() == 2)
 			return;
+		
+		//Input the lab index to register
 		System.out.printf("Enter the desired lab session index for this course (0-%d):\n", course.getLabs().size()-1);
-		while (true) {
+		
+		while (true) {		//Ask for input another lab index if the lab index has no vacancies or the index is invalid
+			
 			try {
 				int labId = scan.nextInt();
 				if ( ! student.registerLab(courseCode, labId)) {
@@ -323,16 +357,18 @@ public class ManageApp {
 			break;
 		}
 		Course course = courseList.get(courseCode);
-		int choice;
+
 		
 		//Choose the class type of the course to check vacancies
-		while (true) {
+		int choice;
+		while (true) {		//Keep displaying the class type to check vacancies as long as user does not want to exit
 			System.out.println("Choose the type of class that you want to check vacancies:");
 			System.out.println("1.Lecture");
 			System.out.println("2.Tutorial");
 			System.out.println("3.Lab");
 			System.out.println("4.Exit");
-			while (true) {
+			
+			while (true) {		//Check for valid choice
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice >4) {
@@ -346,10 +382,14 @@ public class ManageApp {
 				}
 			}
 			if (choice == 4) break;
+			
 			else if(choice == 1) {
+				
+				//Input the lecture index to check vacancies
 				System.out.printf("Enter the lecture index you want to check (0-%d):\n", course.getLecs().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLecs().size()) {
@@ -365,13 +405,18 @@ public class ManageApp {
 				System.out.println(course.getLecs().get(index));
 			}
 			else if(choice == 2) {
+				
+				//Check if this course has tutorial classes
 				if (course.getCourseStructure() == 1) {
 					System.out.println("This course has no tutorials");
 					continue;
-				}	
+				}
+				
+				//Input the tutorial index
 				System.out.printf("Enter the tutorial index you want to check (0-%d):\n", course.getTuts().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getTuts().size()) {
@@ -387,13 +432,18 @@ public class ManageApp {
 				System.out.println(course.getTuts().get(index));
 			}
 			else {
+				
+				//Check if this course has lab sessions
 				if (course.getCourseStructure() != 3) {
 					System.out.println("This course has no lab sessions\n");
 					continue;
 				}
+				
+				//Input lab index
 				System.out.printf("Enter the lab session index you want to check (0-%d):\n", course.getLabs().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLabs().size()) {
@@ -436,13 +486,16 @@ public class ManageApp {
 		
 		//Choose the class type of this course to print student list
 		int choice;
-		while (true) {
+		
+		while (true) {		//Keep displaying the class type to print the student list as long user does not want to exit
+			
 			System.out.println("Choose the type of class that you want to print the student list:");
 			System.out.println("1.Lecture");
 			System.out.println("2.Tutorial");
 			System.out.println("3.Lab");
 			System.out.println("4.Exit");
-			while (true) {
+			
+			while (true) {		//Check for valid choice
 				try {
 					choice = scan.nextInt();
 					if (choice < 1 || choice >4) {
@@ -456,9 +509,12 @@ public class ManageApp {
 				}
 			}
 			if (choice == 1) {
+				
+				//Input the lecture index to print student list
 				System.out.printf("Enter the lecture index you want to print the student list (0-%d):\n", course.getLecs().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLecs().size()) {
@@ -472,6 +528,8 @@ public class ManageApp {
 					}
 				}
 				Lecture lecture = course.getLecs().get(index);
+				
+				//Check if no student registers for this lecture index
 				if (lecture.getStudents().size() == 0)
 					System.out.println("There is no student in this lecture\n");
 				else {
@@ -480,14 +538,20 @@ public class ManageApp {
 					}
 					System.out.println();
 				}
+				
 			}else if (choice == 2) {
+				
+				//Check if this course has tutorial classes
 				if (course.getCourseStructure() == 1) {
 					System.out.println("This course has no tutorials\n");
 					continue;
 				}
+				
+				//Input tutorial index to print student list
 				System.out.printf("Enter the tutorial index you want to print the student list (0-%d):\n", course.getTuts().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getTuts().size()) {
@@ -501,6 +565,8 @@ public class ManageApp {
 					}
 				}
 				Tutorial tut = course.getTuts().get(index);
+				
+				//Check if no student registers for this tutorial index
 				if (tut.getStudents().size() == 0)
 					System.out.println("There is no student in this tutorial\n");
 				else {
@@ -509,14 +575,20 @@ public class ManageApp {
 					}
 					System.out.println();
 				}
+				
 			}else if (choice == 3) {
+				
+				//Check if this course has lab sessions
 				if (course.getCourseStructure() != 3) {
 					System.out.println("This course has no lab sessions\n");
 					continue;
 				}
+				
+				//Input lab index
 				System.out.printf("Enter the lab index you want to print the student list (0-%d):\n", course.getLabs().size()-1);
 				int index;
-				while (true) {
+				
+				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLabs().size()) {
@@ -530,6 +602,8 @@ public class ManageApp {
 					}
 				}
 				Lab lab = course.getLabs().get(index);
+				
+				//Check if no student registers for this lab index
 				if (lab.getStudents().size() == 0)
 					System.out.println("There is no student in this lab session\n");
 				else {
@@ -550,11 +624,12 @@ public class ManageApp {
 			return;
 		}
 		
-		//Input the course code of the coressponding course to set assessment weight
+		//Input the course code of the corresponding course to set assessment weight
 		System.out.println("Enter the course code:");
 		scan.nextLine();
 		String courseCode;
-		while (true) {
+		
+		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
 				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
@@ -564,10 +639,11 @@ public class ManageApp {
 		}
 		Course course = courseList.get(courseCode);
 		
-		//Input weight for coursework
+		//Input assessment weight for coursework
 		System.out.println("Enter the assessment weight of coursework(0-100):");
 		double courseWorkWeight;
-		while (true) {
+		
+		while (true) {		//Check for valid weight
 			try {
 				courseWorkWeight = scan.nextDouble();
 				if (courseWorkWeight<0 || courseWorkWeight>100) {
@@ -585,7 +661,8 @@ public class ManageApp {
 		//Input weight for assignment
 		System.out.println("Enter the assignment weight of the coursework:");
 		double assignmentWeight;
-		while (true) {
+		
+		while (true) {		//Check for valid weight
 			try {
 				assignmentWeight = scan.nextDouble();
 				if (assignmentWeight<0 || assignmentWeight>100) {
@@ -608,6 +685,7 @@ public class ManageApp {
 			System.out.println("There is no students in the record, please add students first\n");
 			return;
 		}
+		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
 			System.out.println("There is no courses in the record, please add courses first\n");
@@ -641,18 +719,20 @@ public class ManageApp {
 		}
 		Course course = courseList.get(courseCode);
 		
+		HashMap<String, GradeRecord> transcript = student.getTranscript();
+		
 		//Check the whether the student register for the input course
-		HashMap<Course, GradeRecord> transcript = student.getTranscript();
-		if (! transcript.containsKey(course)) {
+		if (! transcript.containsKey(courseCode)) {
 			System.out.printf("This student does not register for the course %s\n\n", course);
 			return;
 		}
-		GradeRecord gradeRecord = transcript.get(course);
+		GradeRecord gradeRecord = transcript.get(courseCode);
 		
 		//Enter grade for assignment
 		System.out.printf("Enter the assignment grade (max 100):\n", course.getAssignmentWeight());
 		double grade;
-		while (true) {
+		
+		while (true) {		//Check for valid grade
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
@@ -669,7 +749,8 @@ public class ManageApp {
 		
 		//Enter grade for class-participation
 		System.out.printf("Enter the class participation grade (max 100):\n", course.getClassParticipationWeight());
-		while (true) {
+		
+		while (true) {		//Check for valid grade
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
@@ -688,12 +769,12 @@ public class ManageApp {
 	
 	public static void enterExamMark() {
 		
-		//Check whether is any student in the record
+		//Check whether there is any student in the record
 		if (studentList.size() == 0) {
 			System.out.println("There is no students in the record, please add students first\n");
 			return;
 		}
-		//Check whether is any course in the record
+		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
 			System.out.println("There is no courses in the record, please add courses first\n");
 			return;
@@ -703,7 +784,8 @@ public class ManageApp {
 		System.out.println("Enter the student matric number to enter grade:");
 		scan.nextLine();
 		String matricNo;
-		while (true) {
+		
+		while (true) {		//Check for valid matric number
 			matricNo = scan.nextLine();
 			if (!studentList.containsKey(matricNo)) {
 				System.out.printf("There is no student whose matric number is %s, please input again:\n", matricNo);
@@ -716,7 +798,8 @@ public class ManageApp {
 		//Input course code of the corresponding course
 		System.out.println("Enter the corresponding course code to enter mark:");
 		String courseCode;
-		while (true) {
+		
+		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
 				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
@@ -725,19 +808,19 @@ public class ManageApp {
 			break;
 		}
 		
-		//Check whether the student register for the input course
-		Course course = courseList.get(courseCode);
-		HashMap<Course, GradeRecord> transcript = student.getTranscript();
-		if (! transcript.containsKey(course)) {
-			System.out.printf("This student does not register for the course %s\n\n", course);
+		//Check whether the student registers for the input course
+		HashMap<String, GradeRecord> transcript = student.getTranscript();
+		if (! transcript.containsKey(courseCode)) {
+			System.out.printf("This student does not register for the course %s\n\n", courseList.get(courseCode));
 			return;
 		}
-		GradeRecord gradeRecord = transcript.get(course);
+		GradeRecord gradeRecord = transcript.get(courseCode);
 		
 		//Enter exam grade
 		System.out.println("Enter the exam grade (max 100):");
 		double grade;
-		while (true) {
+		
+		while (true) {		//Check for valid grade
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
@@ -755,14 +838,19 @@ public class ManageApp {
 	}
 	
 	public static void printCourseStatistics() {
+		scan.nextLine();
+		
+		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
 			System.out.println("There is no courses in the record, please add courses first\n");
 			return;
 		}
-		scan.nextLine();
+		
+		//Input the course code to print statistics
 		System.out.println("Enter the course code:");
 		String courseCode;
-		while (true) {
+		
+		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (! courseList.containsKey(courseCode)) {
 				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
@@ -770,9 +858,15 @@ public class ManageApp {
 			}
 			break;
 		}
+		
+		/*
+		 * The remaining code segment try to print the course statistics, namely the course name, course code, the cordinator name, 
+		 * total number of registered students, total vacancies, the course structure and its corresponding components' statistics
+		 */
 		Course course = courseList.get(courseCode);
 		System.out.println("Name: "+course.getName()+"    CourseCode: "+course.getCourseCode()+"    Cordinator: Prof "+course.getCordinator());
 		System.out.println("Total number of students taken this course: "+course.getStudents().size());
+		System.out.println("Total vacancies: "+course.getVancancies());
 		if (course.getCourseStructure() == 1) {
 			System.out.println("This course only has lectures");
 			System.out.print("Number of lectures: "+course.getLecs().size()+"     ");
@@ -792,17 +886,23 @@ public class ManageApp {
 			System.out.print("Number of lab sessions: "+course.getLabs().size()+"     ");
 			System.out.println("Lab capacity: "+course.getLabs().get(0).getCapacity()+"\n");
 		}
+		System.out.println();
 	}
 	
 	public static void printStudentTranscript() {
+		
+		//Check if there is any student in the record
 		if (studentList.size() == 0) {
 			System.out.println("There is no student in the record, please add student first:");
 			return;
 		}
+		
+		//Input student matric number
 		System.out.println("Enter the student matric number:");
 		scan.nextLine();
 		String matricNo;
-		while (true) {
+		
+		while (true) {		//Check for valid matric number
 			matricNo = scan.nextLine();
 			if (!studentList.containsKey(matricNo)) {
 				System.out.printf("There is no student whose matric number is %s, please input again:\n", matricNo);
@@ -811,12 +911,13 @@ public class ManageApp {
 			break;
 		}
 		Student student = studentList.get(matricNo);
-		HashMap<Course,GradeRecord> transcript = student.getTranscript();
+		
+		HashMap<String,GradeRecord> transcript = student.getTranscript();
+		
+		//Print grade records for each course in the transcript
 		for (GradeRecord i: transcript.values()) {
 			System.out.println(i);
 		}
 		System.out.println();
 	}
-	
-
 }
