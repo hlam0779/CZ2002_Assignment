@@ -680,7 +680,7 @@ public class ManageApp {
 			}
 		}
 		course.setAssignmentWeight(assignmentWeight);
-		System.out.println("Successfully set assessment weight of coursework, exam and coursework's component");
+		System.out.println("Successfully set assessment weight of coursework, exam and coursework's component\n");
 	}
 	
 	public static void enterCourseworkMark() {
@@ -769,7 +769,7 @@ public class ManageApp {
 			}
 		}
 		gradeRecord.setClassParticipation(grade);
-		System.out.println("Successfully enter this course's coursework components grade of this student");
+		System.out.println("Successfully enter this course's coursework components grade of this student\n");
 	}
 	
 	public static void enterExamMark() {
@@ -839,7 +839,7 @@ public class ManageApp {
 			}
 		}
 		gradeRecord.setExam(grade);
-		System.out.println("Successfully enter this course's exam grade of this student");
+		System.out.println("Successfully enter this course's exam grade of this student\n");
 	}
 	
 	public static void printCourseStatistics() {
@@ -903,6 +903,8 @@ public class ManageApp {
 		 * Calculate the grade percentage, there are five groups of grade and 
 		 * one unknown group which indicates student whose grade has not been updated yet
 		 */
+		System.out.println();
+		System.out.println("The below table shows how the percentage of students is distributed among groups of grade for each course component");
 		double first = 0;
 		double second = 0;
 		double third = 0;
@@ -944,11 +946,11 @@ public class ManageApp {
 			if (gradeRecord.alreadyEnterExamGrade) {
 				if(gradeRecord.getExam()>=80)
 					first++;
-				else if (gradeRecord.getCoursework()>=60) 
+				else if (gradeRecord.getExam()>=60) 
 					second++;
-				else if (gradeRecord.getCoursework()>=40)
+				else if (gradeRecord.getExam()>=40)
 					third++;
-				else if (gradeRecord.getCoursework()>=20)
+				else if (gradeRecord.getExam()>=20)
 					fourth++;
 				else fifth++;
 			}
