@@ -52,6 +52,7 @@ public class ManageApp {
 					scan.nextLine();
 				}
 			}
+				
 			
 			switch(choice) {
 				case 1: addStudent(); break;
@@ -72,8 +73,8 @@ public class ManageApp {
 		}
 	
 	public static void addStudent() {
-		scan.nextLine();
 		
+		scan.nextLine();
 		//Input student information to add to record
 		System.out.println("Enter student name:");
 		String name = scan.nextLine();
@@ -85,6 +86,7 @@ public class ManageApp {
 			System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
 			return;
 		}
+		
 		
 		System.out.println("Enter major:");
 		String major = scan.nextLine();
@@ -127,12 +129,12 @@ public class ManageApp {
 			System.out.println("This course may already be inserted before since the same course code is found in the record\n");
 			return;
 		}
-		//Input professor name to assign to this course's cordinator
+		//Input professor name to assign to this course's coordinator
 		String profName;
 		Professor prof = null;
 		boolean valid = false;  //indicating whether the input professor name is in the record
 		while (true){		//Ensure the valid input of professor name
-			System.out.println("Enter cordinator name:");
+			System.out.println("Enter coordinator name:");
 			profName = scan.nextLine();
 			for (Professor i: profList) {
 				if (i.getName().equals(profName)) {
@@ -861,11 +863,11 @@ public class ManageApp {
 		}
 		
 		/*
-		 * The remaining code segment try to print the course statistics, namely the course name, course code, the cordinator name, 
+		 * The remaining code segment try to print the course statistics, namely the course name, course code, the coordinator name, 
 		 * total number of registered students, total vacancies, the course structure and its corresponding components' statistics
 		 */
 		Course course = courseList.get(courseCode);
-		System.out.println("Name: "+course.getName()+"    CourseCode: "+course.getCourseCode()+"    Cordinator: Prof "+course.getCordinator());
+		System.out.println("Name: "+course.getName()+"    CourseCode: "+course.getCourseCode()+"    Coordinator: Prof "+course.getCoordinator());
 		System.out.println("Total number of students taken this course: "+course.getStudents().size());
 		System.out.println("Total vacancies: "+course.getVancancies());
 		if (course.getCourseStructure() == 1) {
