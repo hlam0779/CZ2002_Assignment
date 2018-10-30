@@ -115,5 +115,4 @@ public class GradeRecord implements Serializable{
 			return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+"/100"+"    OverallGrade:" +overallGrade+"/100";
 		return "Course: "+course+"    status: "+message;
 	}
-	
 }
