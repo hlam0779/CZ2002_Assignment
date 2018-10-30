@@ -214,6 +214,8 @@ public class ManageApp {
 			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
 			courseList.get(courseCode).createLab(noOfLabs, labCapacity);
 		}
+		
+		System.out.println("Successfully add a course to the record\n");
 	}
 	
 	public static void registerStudent() {
@@ -676,6 +678,7 @@ public class ManageApp {
 			}
 		}
 		course.setAssignmentWeight(assignmentWeight);
+		System.out.println("Successfully set assessment weight of coursework, exam and coursework's component");
 	}
 	
 	public static void enterCourseworkMark() {
@@ -764,7 +767,7 @@ public class ManageApp {
 			}
 		}
 		gradeRecord.setClassParticipation(grade);
-		System.out.println();
+		System.out.println("Successfully enter this course's coursework components grade of this student");
 	}
 	
 	public static void enterExamMark() {
@@ -834,7 +837,7 @@ public class ManageApp {
 			}
 		}
 		gradeRecord.setExam(grade);
-		System.out.println();
+		System.out.println("Successfully enter this course's exam grade of this student");
 	}
 	
 	public static void printCourseStatistics() {
