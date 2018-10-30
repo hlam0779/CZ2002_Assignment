@@ -12,7 +12,7 @@ public class Student implements Serializable{
 	private int yearOfBirth;
 	private String major;
 	private int yearOfAdmission;
-	private HashMap<Course,GradeRecord>  transcript;
+	private HashMap<String,GradeRecord>  transcript;
 	public static int noOfStudents;
 	
 	
@@ -22,7 +22,7 @@ public class Student implements Serializable{
 		this.yearOfBirth = yearOfBirth;
 		this.major = major;
 		this.yearOfAdmission = yearOfAdmission;
-		this.transcript = new HashMap<Course,GradeRecord>();
+		this.transcript = new HashMap<String,GradeRecord>();
 		noOfStudents++;
 	}
 	
@@ -36,13 +36,13 @@ public class Student implements Serializable{
 	
 	public int getYearOfAdmission() { return yearOfAdmission; }
 	
-	public HashMap<Course,GradeRecord> getTranscript() { return transcript; }
+	public HashMap<String,GradeRecord> getTranscript() { return transcript; }
 	
 	public boolean registerTut(String courseCode, int index) {
 		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerTut(this, index)) {
-			if (! transcript.containsKey(course))
-				transcript.put(course, new GradeRecord(course));
+			if (! transcript.containsKey(courseCode))
+				transcript.put(courseCode, new GradeRecord(course));
 			return true;
 		}
 		return false;
@@ -51,8 +51,8 @@ public class Student implements Serializable{
 	public boolean registerLab(String courseCode, int index) {
 		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerLab(this, index)) {
-			if (! transcript.containsKey(course))
-				transcript.put(course, new GradeRecord(course));
+			if (! transcript.containsKey(courseCode))
+				transcript.put(courseCode, new GradeRecord(course));
 			return true;
 		}
 		return false;
@@ -61,20 +61,11 @@ public class Student implements Serializable{
 	public boolean registerLec(String courseCode, int index) {
 		Course course = ManageApp.courseList.get(courseCode);
 		if (course.registerLec(this, index)) {
-			if (! transcript.containsKey(course))
-				transcript.put(course, new GradeRecord(course));
+			if (! transcript.containsKey(courseCode))
+				transcript.put(courseCode, new GradeRecord(course));
 			return true;
 		}
 		return false;
-	}
-	
-	public void enterGrade(Course course, int i, double grade) {
-		if (i == 1)
-			transcript.get(course).setClassParticipation(grade);
-		else if (i == 2)
-			transcript.get(course).setAssigment(grade);
-		else
-			transcript.get(course).setExam(grade);
 	}
 	
 	//Print student information, this is used for printing student list by lectures, tutorials and lab sessions in the printStudentList method of ManageApp
@@ -86,7 +77,7 @@ public class Student implements Serializable{
 	//Two students are the same if they have the same matric number
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Student) )
+		if (! (o instanceof Student) )
 			return false;
 		Student s = (Student) o;
 		return (this.matricNo.equals(s.getMatric()));
@@ -95,8 +86,6 @@ public class Student implements Serializable{
 	//This is used to hash students into HashMap or HashSet object using matric number
 	@Override
 	public int hashCode() {
-		if (this.matricNo == null)
-			return super.hashCode();
 		return this.matricNo.hashCode();
 	}
 }
