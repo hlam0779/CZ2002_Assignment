@@ -2,6 +2,7 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -114,7 +115,7 @@ public class ManageApp {
 		}
 		
 		studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
-		System.out.println("Successfully add student\n");
+		System.out.println("Successfully add this student to the record\n");
 	}
 	
 	public static void addCourse() {
@@ -129,6 +130,7 @@ public class ManageApp {
 			System.out.println("This course may already be inserted before since the same course code is found in the record\n");
 			return;
 		}
+		
 		//Input professor name to assign to this course's coordinator
 		String profName;
 		Professor prof = null;
@@ -215,7 +217,7 @@ public class ManageApp {
 			courseList.get(courseCode).createLab(noOfLabs, labCapacity);
 		}
 		
-		System.out.println("Successfully add a course to the record\n");
+		System.out.println("Successfully add this course to the record\n");
 	}
 	
 	public static void registerStudent() {
@@ -864,7 +866,8 @@ public class ManageApp {
 		
 		/*
 		 * The remaining code segment try to print the course statistics, namely the course name, course code, the coordinator name, 
-		 * total number of registered students, total vacancies, the course structure and its corresponding components' statistics
+		 * total number of registered students, total vacancies, the course structure and its corresponding components' statistics,
+		 * the overall grade, exam grade and coursework grade percentage
 		 */
 		Course course = courseList.get(courseCode);
 		System.out.println("Name: "+course.getName()+"    CourseCode: "+course.getCourseCode()+"    Coordinator: Prof "+course.getCoordinator());
@@ -872,23 +875,121 @@ public class ManageApp {
 		System.out.println("Total vacancies: "+course.getVancancies());
 		if (course.getCourseStructure() == 1) {
 			System.out.println("This course only has lectures");
-			System.out.print("Number of lectures: "+course.getLecs().size()+"     ");
-			System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity()+"\n");
+			System.out.printf("Number of lectures: %-9d",course.getLecs().size());
+			System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
 		} else if(course.getCourseStructure() == 2) {
 			System.out.println("This course only has lectures and tutorials");
-			System.out.print("Number of lectures: "+course.getLecs().size()+"     ");
+			System.out.printf("Number of lectures: %-9d",course.getLecs().size());
 			System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
-			System.out.print("Number of tutorials: "+course.getTuts().size()+"     ");
-			System.out.println("Tutorial capacity: "+course.getTuts().get(0).getCapacity()+"\n");
+			System.out.printf("Number of tutorials: %-8d",course.getTuts().size());
+			System.out.println("Tutorial capacity: "+course.getTuts().get(0).getCapacity());
 		} else {
 			System.out.println("This course has lectures, tutorials and lab sessions");
-			System.out.print("Number of lectures: "+course.getLecs().size()+"     ");
+			System.out.printf("Number of lectures: %-9d",course.getLecs().size());
 			System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
-			System.out.print("Number of tutorials: "+course.getTuts().size()+"     ");
+			System.out.printf("Number of tutorials: %-8d",course.getTuts().size());
 			System.out.println("Tutorial capacity: "+course.getTuts().get(0).getCapacity());
-			System.out.print("Number of lab sessions: "+course.getLabs().size()+"     ");
-			System.out.println("Lab capacity: "+course.getLabs().get(0).getCapacity()+"\n");
+			System.out.printf("Number of lab sessions: %-5d",course.getLabs().size());
+			System.out.println("Lab capacity: "+course.getLabs().get(0).getCapacity());
 		}
+		
+		
+		HashSet<Student> students = course.getStudents();
+		if (students.size() == 0) {
+			System.out.println("No grade statistics is available\n");
+			return;
+		}
+		/*
+		 * Calculate the grade percentage, there are five groups of grade and 
+		 * one unknown group which indicates student whose grade has not been updated yet
+		 */
+		double first = 0;
+		double second = 0;
+		double third = 0;
+		double fourth = 0;
+		double fifth = 0;
+		double firstPercentage,secondPercentage,thirdPercentage,fourthPercentage, fifthPercentage, unknown;
+		
+		for (Student s: students) {
+			HashMap<String,GradeRecord> transcript = s.getTranscript();
+			GradeRecord gradeRecord = transcript.get(courseCode);
+			if (gradeRecord.updateCoursework()) {
+				if(gradeRecord.getCoursework()>=80)
+					first++;
+				else if (gradeRecord.getCoursework()>=60) 
+					second++;
+				else if (gradeRecord.getCoursework()>=40)
+					third++;
+				else if (gradeRecord.getCoursework()>=20)
+					fourth++;
+				else fifth++;
+			}
+		}
+		
+		firstPercentage = first/students.size()*100.0;
+		secondPercentage = second/students.size()*100.0;
+		thirdPercentage = third/students.size()*100.0;
+		fourthPercentage = fourth/students.size()*100.0;
+		fifthPercentage = fifth/students.size()*100.0;
+		unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
+		
+		System.out.println("GradeGroup       80-100     60-80     40-60     20-40     0-20     unknown");
+		System.out.printf( "Coursework(%%)    %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
+														thirdPercentage, fourthPercentage, fifthPercentage, unknown);
+		
+		first = second = third = fourth = fifth = 0.0;
+		for (Student s: students) {
+			HashMap<String,GradeRecord> transcript = s.getTranscript();
+			GradeRecord gradeRecord = transcript.get(courseCode);
+			if (gradeRecord.alreadyEnterExamGrade) {
+				if(gradeRecord.getExam()>=80)
+					first++;
+				else if (gradeRecord.getCoursework()>=60) 
+					second++;
+				else if (gradeRecord.getCoursework()>=40)
+					third++;
+				else if (gradeRecord.getCoursework()>=20)
+					fourth++;
+				else fifth++;
+			}
+		}
+		
+		firstPercentage = first/students.size()*100.0;
+		secondPercentage = second/students.size()*100.0;
+		thirdPercentage = third/students.size()*100.0;
+		fourthPercentage = fourth/students.size()*100.0;
+		fifthPercentage = fifth/students.size()*100.0;
+		unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
+		
+		System.out.printf( "Exam(%%)          %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
+														thirdPercentage, fourthPercentage, fifthPercentage, unknown);
+		
+		first = second = third = fourth = fifth = 0.0;
+		for (Student s: students) {
+			HashMap<String,GradeRecord> transcript = s.getTranscript();
+			GradeRecord gradeRecord = transcript.get(courseCode);
+			if (gradeRecord.calOverallGrade()) {
+				if(gradeRecord.getOverallGrade()>=80)
+					first++;
+				else if (gradeRecord.getOverallGrade()>=60) 
+					second++;
+				else if (gradeRecord.getOverallGrade()>=40)
+					third++;
+				else if (gradeRecord.getOverallGrade()>=20)
+					fourth++;
+				else fifth++;
+			}
+		}
+		
+		firstPercentage = first/students.size()*100.0;
+		secondPercentage = second/students.size()*100.0;
+		thirdPercentage = third/students.size()*100.0;
+		fourthPercentage = fourth/students.size()*100.0;
+		fifthPercentage = fifth/students.size()*100.0;
+		unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
+		
+		System.out.printf( "OverallGrade(%%)  %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
+														thirdPercentage, fourthPercentage, fifthPercentage, unknown);
 		System.out.println();
 	}
 	
