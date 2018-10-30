@@ -52,7 +52,6 @@ public class ManageApp {
 					scan.nextLine();
 				}
 			}
-				
 			
 			switch(choice) {
 				case 1: addStudent(); break;
@@ -73,8 +72,8 @@ public class ManageApp {
 		}
 	
 	public static void addStudent() {
-		
 		scan.nextLine();
+		
 		//Input student information to add to record
 		System.out.println("Enter student name:");
 		String name = scan.nextLine();
@@ -86,7 +85,6 @@ public class ManageApp {
 			System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
 			return;
 		}
-		
 		
 		System.out.println("Enter major:");
 		String major = scan.nextLine();
