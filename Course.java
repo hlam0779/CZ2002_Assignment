@@ -110,18 +110,6 @@ public class Course implements Serializable{
 			return ! (totalLecVacancies == 0 || totalTutVacancies == 0);
 		return ! (totalLecVacancies == 0 || totalTutVacancies == 0 || totalLabVacancies == 0);
 	}
-	
-	public boolean registerTut(Student s, int tutId) {
-		if (tutId<0 || tutId>=tuts.size()) {
-			System.out.println("This tutorial index does not exist");
-			return false;
-		}
-		if (tuts.get(tutId).addStudent(s)) {
-			Students.add(s);
-			return true;
-		}
-		return false;
-	}
 
 	public double getCourseworkWeight() { return courseworkWeight; }
 	
@@ -140,7 +128,31 @@ public class Course implements Serializable{
 	}
 	
 	public int getVancancies() {
-		return Math.min(totalLecVacancies, Math.min(totalTutVacancies, totalLabVacancies));
+		if (courseStructure == 3)
+			return Math.min(totalLecVacancies, Math.min(totalTutVacancies, totalLabVacancies));
+		else if (courseStructure == 2)
+			return Math.min(totalLecVacancies, totalTutVacancies);
+		else
+			return totalLecVacancies;
+	}
+	
+	/* Register student to a specific tutorial index of this course 
+	 * Return true if successfully register, and false otherwise
+	 */
+	public boolean registerTut(Student s, int tutId) {
+		
+		//Check to ensure legal tutorial index
+		if (tutId<0 || tutId>=tuts.size()) {
+			System.out.println("This tutorial index does not exist");
+			return false;
+		}
+		
+		//register student to the lab and add student to student list of this course
+		if (tuts.get(tutId).addStudent(s)) {
+			Students.add(s);
+			return true;
+		}
+		return false;
 	}
 	
 	/* Register student to a specific lab index of this course 
@@ -205,7 +217,7 @@ public class Course implements Serializable{
 		System.out.println("The class participation weight of the coursework is automatically set to "+this.classParticipationWeight);
 	}
 	
-	//Two course are the same if either it has the same course code 
+	//Two courses are the same if they the same course code 
 	@Override
 	public boolean equals(Object o) {
 		if (! (o instanceof Course))
