@@ -49,7 +49,7 @@ public class ManageApp {
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, please input your choice again:");
+					System.out.println("Invalid choice, you must input an integer between 1 and 11, please input your choice again:");
 					scan.nextLine();
 				}
 			}
@@ -74,8 +74,8 @@ public class ManageApp {
 		}
 	
 	public static void addStudent() {
-		
 		scan.nextLine();
+		
 		//Input student information to add to record
 		System.out.println("Enter student name:");
 		String name = scan.nextLine();
@@ -98,7 +98,7 @@ public class ManageApp {
 				yearOfBirth = scan.nextInt();
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input year of birth again:");
+				System.out.println("Invalid input, you must input an integer, please input year of birth again:");
 				scan.nextLine();
 			}
 		}
@@ -109,21 +109,36 @@ public class ManageApp {
 				yearOfAdmission = scan.nextInt();
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input year of admission again:");
+				System.out.println("Invalid input, you must input an integer, please input year of admission again:");
 				scan.nextLine();
 			}
 		}
 		
 		studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
-		System.out.println("Successfully add this student to the record\n");
+		System.out.println("Successfully add this student to the record");
+		System.out.println("The current student list:");
+		for (Student s: studentList.values()) {
+			System.out.println(s);
+		}
+		System.out.println();
 	}
 	
 	public static void addCourse() {
+		scan.nextLine();
 		
 		//Input course information to add to the record
 		System.out.println("Enter course name:");
-		scan.nextLine();
-		String name = scan.nextLine();
+		String name;
+		while (true) {
+			name = scan.nextLine();
+			for (Course i: courseList.values()) {
+				if (name.equals(i.getName())) {
+					System.out.println("This course may already be inserted before since the same course name is found in the record\n");
+					return;
+				}
+			}
+			break;
+		}
 		System.out.println("Enter courseCode:");
 		String courseCode = scan.nextLine();
 		if (courseList.containsKey(courseCode)) {	//Check whether the same course has already be inserted before
@@ -162,7 +177,7 @@ public class ManageApp {
 					courseStructure = scan.nextInt();
 				else {
 					scan.nextLine();
-					throw new Exception("Invalid choice");
+					throw new Exception("Invalid input, you must input an integer between 1 and 3");
 				}
 				if (courseStructure<1 || courseStructure >3)
 					throw new Exception("Invalid choice, your choice must be between 1 and 3");
@@ -217,7 +232,31 @@ public class ManageApp {
 			courseList.get(courseCode).createLab(noOfLabs, labCapacity);
 		}
 		
-		System.out.println("Successfully add this course to the record\n");
+		//Input the grade weightage structure of this
+		int weightStructure = 0 ;
+		while (true) {		//Check for valid input
+			System.out.println("Choose course grade weightage structure: ");
+			System.out.println("1.Course has exam and coursework weightage without sub-component");
+			System.out.println("2.Course has exam and coursework weightage with two sub-components");
+			try {
+				weightStructure = scan.nextInt();
+				if (weightStructure > 2 || weightStructure <1) {
+					System.out.println("Invalid choice, your choice must be either 1 or 2");
+					continue;
+				}		
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, your choice must be either 1 or 2");
+				scan.nextLine();
+			}
+			courseList.get(courseCode).setWeightStructure(weightStructure);
+			break;
+		}
+		System.out.println("Successfully add this course to the record");
+		System.out.println("The current course list:");
+		for (Course c: courseList.values()) {
+			System.out.println(c.getCourseInfo());
+		}
+		System.out.println();
 	}
 	
 	public static void registerStudent() {
@@ -662,6 +701,11 @@ public class ManageApp {
 		}
 		course.setCourseworkWeight(courseWorkWeight);
 		
+		//Check if this course's coursework has sub-component weightage or not
+		if (course.getWeightStructure() == 1) {
+			System.out.println("Successfully set assessment weight of coursework and exam\n");
+			return;
+		}
 		//Input weight for assignment
 		System.out.println("Enter the assignment weight of the coursework:");
 		double assignmentWeight;
@@ -733,9 +777,35 @@ public class ManageApp {
 		}
 		GradeRecord gradeRecord = transcript.get(courseCode);
 		
+		/*
+		 * The remaining code segment will ask user to enter coursework mark base on
+		 * this course grade weightage structure
+		 */
+		double grade = 0;
+		
+		//Check if this course's coursework does not have sub-components
+		if (course.getWeightStructure() == 1) {
+			System.out.println("Enter the coursework grade (max 100):");
+			
+			while (true) {		//Check for valid grade
+				try {
+					grade = scan.nextDouble();
+					if (grade<0 || grade >100) {
+						System.out.println("Invalid input, the grade must be between 0 and 100, please input again:");
+						continue;
+					}
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid input, you must input a real number, please input again:");
+					scan.nextLine();
+				}
+				break;
+			}
+			gradeRecord.setCoursework(grade);
+			System.out.println("Successfully enter this course's coursework grade for this student\n");
+			return;
+		}
 		//Enter grade for assignment
 		System.out.printf("Enter the assignment grade (max 100):\n", course.getAssignmentWeight());
-		double grade;
 		
 		while (true) {		//Check for valid grade
 			try {
@@ -746,7 +816,7 @@ public class ManageApp {
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input again:");
+				System.out.println("Invalid input, you must input a real number, please input again:");
 				scan.nextLine();
 			}
 		}
@@ -764,12 +834,12 @@ public class ManageApp {
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input again:");
+				System.out.println("Invalid input, you must input a real number, please input again:");
 				scan.nextLine();
 			}
 		}
 		gradeRecord.setClassParticipation(grade);
-		System.out.println("Successfully enter this course's coursework components grade of this student\n");
+		System.out.println("Successfully enter this course's coursework components grade for this student\n");
 	}
 	
 	public static void enterExamMark() {
@@ -834,7 +904,7 @@ public class ManageApp {
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input again:");
+				System.out.println("Invalid input, you must input a real number, please input again:");
 				scan.nextLine();
 			}
 		}
@@ -893,7 +963,6 @@ public class ManageApp {
 			System.out.println("Lab capacity: "+course.getLabs().get(0).getCapacity());
 		}
 		
-		
 		HashSet<Student> students = course.getStudents();
 		if (students.size() == 0) {
 			System.out.println("No grade statistics is available\n");
@@ -915,7 +984,20 @@ public class ManageApp {
 		for (Student s: students) {
 			HashMap<String,GradeRecord> transcript = s.getTranscript();
 			GradeRecord gradeRecord = transcript.get(courseCode);
-			if (gradeRecord.updateCoursework()) {
+			if (course.getWeightStructure() == 2) {
+				if (gradeRecord.updateCoursework()) {
+					if(gradeRecord.getCoursework()>=80)
+						first++;
+					else if (gradeRecord.getCoursework()>=60) 
+						second++;
+					else if (gradeRecord.getCoursework()>=40)
+						third++;
+					else if (gradeRecord.getCoursework()>=20)
+						fourth++;
+					else fifth++;
+				}
+			}
+			else if (gradeRecord.alreadyEnterCourseworkGrade){
 				if(gradeRecord.getCoursework()>=80)
 					first++;
 				else if (gradeRecord.getCoursework()>=60) 
@@ -1019,7 +1101,10 @@ public class ManageApp {
 		Student student = studentList.get(matricNo);
 		
 		HashMap<String,GradeRecord> transcript = student.getTranscript();
-		
+		if (transcript.values().size() == 0) {
+			System.out.println("This student has not registered for any course yet");
+			return;
+		}
 		//Print grade records for each course in the transcript
 		for (GradeRecord i: transcript.values()) {
 			System.out.println(i);
