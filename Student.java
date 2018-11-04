@@ -12,7 +12,7 @@ public class Student implements Serializable{
 	private int yearOfBirth;
 	private String major;
 	private int yearOfAdmission;
-	private HashMap<String,GradeRecord>  transcript;
+	private HashMap<String,GradeRecord>  transcript;		//Map a course code to a grade record
 	public static int noOfStudents;
 	
 	
@@ -73,19 +73,5 @@ public class Student implements Serializable{
 	public String toString() {
 		return "Name: "+name+"    MatricNumber:  "+matricNo+ "    Major: "+major;
 	}
-	
-	//Two students are the same if they have the same matric number
-	@Override
-	public boolean equals(Object o) {
-		if (! (o instanceof Student) )
-			return false;
-		Student s = (Student) o;
-		return (this.matricNo.equals(s.getMatric()));
-	}
-	
-	//This is used to hash students into HashMap or HashSet object using matric number
-	@Override
-	public int hashCode() {
-		return this.matricNo.hashCode();
-	}
+
 }
