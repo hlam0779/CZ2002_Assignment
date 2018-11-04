@@ -112,9 +112,8 @@ public class Course implements Serializable{
 	public boolean hasVacancies() {
 		if (courseStructure == 1)
 			return ! (totalLecVacancies == 0);
-		if (courseStructure == 2)
-			return ! (totalLecVacancies == 0 || totalTutVacancies == 0);
-		return ! (totalLecVacancies == 0 || totalTutVacancies == 0 || totalLabVacancies == 0);
+		return ! (totalLecVacancies == 0 || totalTutVacancies == 0);
+		
 	}
 
 	public double getCourseworkWeight() { return courseworkWeight; }
@@ -136,12 +135,9 @@ public class Course implements Serializable{
 	}
 	
 	public int getVancancies() {
-		if (courseStructure == 3)
-			return Math.min(totalLecVacancies, Math.min(totalTutVacancies, totalLabVacancies));
-		else if (courseStructure == 2)
+		if (courseStructure >= 2)
 			return Math.min(totalLecVacancies, totalTutVacancies);
-		else
-			return totalLecVacancies;
+		return totalLecVacancies;
 	}
 	
 	public String getCourseInfo() {
