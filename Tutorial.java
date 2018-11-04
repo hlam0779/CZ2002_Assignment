@@ -37,10 +37,9 @@ public class Tutorial implements Serializable{
 		if (capacity > currentOccupied()) {
 			this.students.add(s);
 			course.reduceTutVacancies();
-			System.out.println("Successfully register this student for this tutorial\n");
 			return true;
 		}
-		System.out.println("No available vacancies for this tutorial\n");
+		System.out.println("No available vacancies for this index\n");
 		return false;
 	}
 	
