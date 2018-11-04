@@ -47,6 +47,6 @@ public class Lab implements Serializable{
 	//This is used for printing the vacancies of this lab session in the checkVacancies method of the ManageApp
 	@Override
 	public String toString() {
-		return "This lab has "+ (capacity-currentOccupied())+ " vacancies\n";
+		return "Total vacancies: "+ (capacity-currentOccupied())+ "/"+capacity+"\n";
 	}
 }
