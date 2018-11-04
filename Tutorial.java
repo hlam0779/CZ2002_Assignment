@@ -47,6 +47,6 @@ public class Tutorial implements Serializable{
 	//This is used for printing the vacancies of this tutorial in the checkVacancies method of the ManageApp
 	@Override
 	public String toString() {
-		return "This tutorial has "+ (capacity-currentOccupied())+ " vacancies\n";
+		return "Total vacancies: "+ (capacity-currentOccupied())+ "/"+capacity+"\n";
 	}
 }
