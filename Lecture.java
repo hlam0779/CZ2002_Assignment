@@ -47,6 +47,6 @@ public class Lecture implements Serializable{
 	//This is used for printing the vacancies of this lecture in the checkVacancies method of the ManageApp
 	@Override
 	public String toString() {
-		return "This lecture has "+ (capacity-currentOccupied())+ " vacancies\n";
+		return "Total vacancies: "+ (capacity-currentOccupied())+ "/"+capacity+"\n";
 	}
 }
