@@ -11,6 +11,7 @@ public class Course implements Serializable{
 	private String name;						
 	private String courseCode;
 	private int courseStructure;					//There are three types of course structure representing by three number 1,2 and 3
+	private int weightStructure;
 	private Professor coordinator;					//Coordinator of this course
 	private double courseworkWeight;				//Asessment weight of coursework for this course (unit: percent(%))
 	private double examWeight;						//Asessment weight of exam for this course (unit: percent(%))
@@ -57,6 +58,8 @@ public class Course implements Serializable{
 	
 	public int getCourseStructure() { return courseStructure; }
 	
+	public int getWeightStructure() { return weightStructure; }
+	
 	public String getCourseCode() { return courseCode; }
 	
 	public String getName() { return name; }
@@ -71,6 +74,9 @@ public class Course implements Serializable{
 	
 	public HashSet<Student> getStudents() { return Students; }
 	
+	public void setWeightStructure(int weightStructure) { 
+		this.weightStructure = weightStructure;
+	}
 	
 	
 	public void createTut(int noOfTut, int capacity) {
@@ -120,7 +126,9 @@ public class Course implements Serializable{
 	public double getClassParticipationWeight() { return classParticipationWeight; }
 	
 	public boolean getAsessmentWeightageStatus() {
-		return this.alreadyAddAsessmentWeight && this.alreadyAddSubComponentWeightOfCoursework;
+		if (weightStructure == 2)
+			return this.alreadyAddAsessmentWeight && this.alreadyAddSubComponentWeightOfCoursework;
+		return this.alreadyAddAsessmentWeight;
 	}
 	
 	public boolean getCourseworkWeightageStatus() {
@@ -134,6 +142,10 @@ public class Course implements Serializable{
 			return Math.min(totalLecVacancies, totalTutVacancies);
 		else
 			return totalLecVacancies;
+	}
+	
+	public String getCourseInfo() {
+		return toString()+"     Coordinator: Prof "+coordinator;
 	}
 	
 	/* Register student to a specific tutorial index of this course 
@@ -215,23 +227,6 @@ public class Course implements Serializable{
 		this.classParticipationWeight = 100.0-weight;
 		this.alreadyAddSubComponentWeightOfCoursework = true;
 		System.out.println("The class participation weight of the coursework is automatically set to "+this.classParticipationWeight);
-	}
-	
-	//Two courses are the same if they the same course code 
-	@Override
-	public boolean equals(Object o) {
-		if (! (o instanceof Course))
-			return false;
-		Course c = (Course) o;
-		if (this.courseCode.equals(c.getCourseCode()))
-			return true;
-		return false;
-	}
-	
-	//This is used to hash the course to the HashMap or HashSet Object
-	@Override
-	public int hashCode() {
-		return this.courseCode.hashCode();
 	}
 	
 	@Override
