@@ -21,6 +21,7 @@ public class GradeRecord implements Serializable{
 	public boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
 	public boolean alreadyEnterClassParticipationGrade;	//(true if grade has already been entered by some administrator and
 	public boolean alreadyEnterExamGrade;				//false otherwise, these variables are set to public for convenience
+	public boolean alreadyEnterCourseworkGrade; // this variable will be used if the course weightage structure is 1
 	
 	
 	public GradeRecord(Course course) {
@@ -28,6 +29,7 @@ public class GradeRecord implements Serializable{
 		this.alreadyEnterAssignmentGrade = false;
 		this.alreadyEnterClassParticipationGrade = false;
 		this.alreadyEnterExamGrade = false;
+		this.alreadyEnterCourseworkGrade = false;
 	}
 	
 	public void setExam(double grade) {
@@ -43,6 +45,11 @@ public class GradeRecord implements Serializable{
 	public void setClassParticipation(double grade) {
 		classParticipation = grade;
 		this.alreadyEnterClassParticipationGrade = true;
+	}
+	
+	public void setCoursework(double grade) {
+		this.coursework = grade;
+		this.alreadyEnterCourseworkGrade = true;
 	}
 	
 	
@@ -86,8 +93,12 @@ public class GradeRecord implements Serializable{
 	public boolean calOverallGrade() {
 		
 		//calculate coursework grade
-		if (! updateCoursework())
+		if (course.getWeightStructure() == 2 && ! updateCoursework())
 			return false;
+		else if ( ! alreadyEnterCourseworkGrade) {
+			message = "Cannot compute overall grade, please enter the coursework grade first";
+			return false;
+		}
 		
 		//Check the assessment weight status of coursework and exam
 		if (! course.getAsessmentWeightageStatus()) {
@@ -111,8 +122,13 @@ public class GradeRecord implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		if (calOverallGrade())
-			return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
+		if (course.getWeightStructure() == 2) {
+			if (calOverallGrade())
+				return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
+			return "Course: "+course+"    status: "+message;
+		}
+		else if (calOverallGrade())
+			return "Course: "+course+"    CourseworkGrade: "+coursework+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
 		return "Course: "+course+"    status: "+message;
 	}
 }
