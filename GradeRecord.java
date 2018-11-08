@@ -15,7 +15,7 @@ public class GradeRecord implements Serializable{
 	private double classParticipation;				//Class participation grade for the corresponding course (max 100)
 	private double overallGrade;					//Overall grade, this is calculated based on the coursework and exam grade (max 100)
 	
-	private String message;							/*This will be printed to inform the error when trying to 
+	private String statusMessage;							/*This will be printed to inform the error when trying to 
 													 *get access to the grade that has not been successfully calculated
 													 */
 	public boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
@@ -72,12 +72,12 @@ public class GradeRecord implements Serializable{
 		
 		//Check the coursework weight status
 		if (! course.getCourseworkWeightageStatus()) {
-			message = "Cannot compute coursework grade, please update the sub-component weight of coursework first";
+			statusMessage = "Cannot compute coursework grade, please update the sub-component weight of coursework first";
 			return false;
 		}
 		//Check the grade status of assignment and class participation
 		if (!(this.alreadyEnterAssignmentGrade && this.alreadyEnterClassParticipationGrade)) {
-			message = "Cannot compute coursework grade, please enter this student's grade for each component of coursework first";
+			statusMessage = "Cannot compute coursework grade, please enter this student's grade for each component of coursework first";
 			return false;
 		}
 		//Calculate the course if there is no missing required information
@@ -96,19 +96,19 @@ public class GradeRecord implements Serializable{
 		if (course.getWeightStructure() == 2 && ! updateCoursework())
 			return false;
 		else if ( ! alreadyEnterCourseworkGrade) {
-			message = "Cannot compute overall grade, please enter the coursework grade first";
+			statusMessage = "Cannot compute overall grade, please enter the coursework grade first";
 			return false;
 		}
 		
 		//Check the assessment weight status of coursework and exam
 		if (! course.getAsessmentWeightageStatus()) {
-			message = "Cannot compute overall grade, please update the coursework weight and exam weight first";
+			statusMessage = "Cannot compute overall grade, please update the coursework weight and exam weight first";
 			return false;
 		}
 		
 		//Check the grade status of the exam
 		if (! this.alreadyEnterExamGrade) {
-			message = "Cannot compute overall grade, please enter the exam grade of this student first";
+			statusMessage = "Cannot compute overall grade, please enter the exam grade of this student first";
 			return false;
 		}
 		
@@ -124,11 +124,13 @@ public class GradeRecord implements Serializable{
 	public String toString() {
 		if (course.getWeightStructure() == 2) {
 			if (calOverallGrade())
-				return "Course: "+course+"    AssignmentGrade: "+assignment+"/100"+"    ClassPariticipationGrade: "+classParticipation+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
-			return "Course: "+course+"    status: "+message;
+				return "Course: "+course+String.format("    AssignmentGrade (subWeight: %d%%): %.1f/100",(int) course.getAssignmentWeight(), assignment)+String.format("    ClassPariticipationGrade (subWeight: %d%%): %.1f/100",(int)course.getClassParticipationWeight(),classParticipation)+
+						String.format("    Coursework(%d%%): %.1f/100", course.getCourseworkWeight(), coursework)+String.format("    Exam(%d%%): %.1f/100",(int) course.getExamWeight(),exam)+String.format("    OverallGrade: %.1f/100", overallGrade);
+			return "Course: "+course+"    status: "+statusMessage;
 		}
 		else if (calOverallGrade())
-			return "Course: "+course+"    CourseworkGrade: "+coursework+"/100"+"    Exam: "+exam+"/100"+"    OverallGrade: " +String.format("%.2f/100", overallGrade);
-		return "Course: "+course+"    status: "+message;
+			return "Course: "+course+String.format("    Coursework(%d%%): %.1f/100",(int) course.getCourseworkWeight(), coursework)+String.format("    Exam(%d%%): %.1f/100",(int) course.getExamWeight(),exam)+String.format("    OverallGrade: %.1f/100", overallGrade);
+		return "Course: "+course+"    status: "+statusMessage;
 	}
+	
 }
