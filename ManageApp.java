@@ -150,8 +150,13 @@ public class ManageApp {
 		String profName;
 		Professor prof = null;
 		boolean valid = false;  //indicating whether the input professor name is in the record
+		
+		//Display the professor list for user to choose
+		for (Professor i: profList) {
+			System.out.println(i);
+		}
+		System.out.println("Enter coordinator name, please choose from the list above:");
 		while (true){		//Ensure the valid input of professor name
-			System.out.println("Enter coordinator name:");
 			profName = scan.nextLine();
 			for (Professor i: profList) {
 				if (i.getName().equals(profName)) {
@@ -162,7 +167,7 @@ public class ManageApp {
 			}
 			if (valid)
 				break;
-			else System.out.println("There is no professor whose name is "+profName+", please choose another name:");
+			else System.out.println("There is no professor whose name is "+profName+", please choose name from the above list:");
 		}
 		
 		//Input the course structure
@@ -170,9 +175,9 @@ public class ManageApp {
 		while (true) {		//Check for valid input
 			try {
 				System.out.println("Choose course structure(1-3):");
-				System.out.println("1.Course only has lectures");
-				System.out.println("2.Course only has lectures and tutorial classes");
-				System.out.println("3.Course has lectures, tutorial and laboratory sessions");
+				System.out.println("1.Course only has lecture");
+				System.out.println("2.Course only has lecture and tutorial classes");
+				System.out.println("3.Course has lecture, tutorial and laboratory sessions");
 				if (scan.hasNextInt())
 					courseStructure = scan.nextInt();
 				else {
@@ -189,9 +194,36 @@ public class ManageApp {
 		
 		//Input number of lectures and the corresponding capacity
 		System.out.println("Enter the number of lectures for this course:");
-		int noOfLecs = scan.nextInt();
+		int noOfLecs = 0;
+		
+		while (true) {		//Check for valid input
+			try {
+				noOfLecs = scan.nextInt();
+				if (noOfLecs < 1) {
+					System.out.println("The number of lectures must be at least 1, please input again:");
+					continue;
+				}
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, you must input an integer, please input again:");
+				scan.nextLine();
+			}
+		}
 		System.out.println("Enter the capacity for these lecture:");
-		int lecCapacity = scan.nextInt();
+		int lecCapacity = 0;
+		while (true) {		//Check for valid input
+			try {
+				lecCapacity = scan.nextInt();
+				if (lecCapacity < 1) {
+					System.out.println("The capacity must be at least 1, please input again:");
+					continue;
+				}
+				break;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, you must input an integer, please input again:");
+				scan.nextLine();
+			}
+		}
 		if (courseStructure == 1) {
 			
 			//Create new course object and add to course list
@@ -202,9 +234,35 @@ public class ManageApp {
 			
 			//Input number of tutorials and the corresponding capacity
 			System.out.println("Enter the number of tutorials for this course:");
-			int noOfTuts = scan.nextInt();
-			System.out.println("Enter the capacity for these tutorial:");
-			int tutCapacity = scan.nextInt();
+			int noOfTuts = 0;
+			while (true) {		//Check for valid input
+				try {
+					noOfTuts = scan.nextInt();
+					if (noOfTuts < 1) {
+						System.out.println("The number of tutorials must be at least 1, please input again:");
+						continue;
+					}
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid input, you must input an integer, please input again:");
+					scan.nextLine();
+				}
+			}
+			System.out.println("Enter the capacity for these tutorials:");
+			int tutCapacity = 0;
+			while (true) {		//Check for valid input
+				try {
+					tutCapacity = scan.nextInt();
+					if (tutCapacity < 1) {
+						System.out.println("The capacity must be at least 1, please input again:");
+						continue;
+					}
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid input, you must input an integer, please input again:");
+					scan.nextLine();
+				}
+			}
 			
 			//Create new course object and add to course list
 			courseList.put(courseCode, new Course(name, courseCode, prof, 2));
@@ -213,23 +271,43 @@ public class ManageApp {
 		}
 		else {
 			
-			//Input number of tutorials and the corresponding capacity
-			System.out.println("Enter the number of tutorials for this course:");
-			int noOfTuts = scan.nextInt();
-			System.out.println("Enter the capacity for these tutorial:");
-			int tutCapacity = scan.nextInt();
-			
-			//Input number of lectures and the corresponding capacity
-			System.out.println("Enter the number of lab sessions for this course:");
-			int noOfLabs = scan.nextInt();
-			System.out.println("Enter the capacity for these lab sessions:");
-			int labCapacity = scan.nextInt();
+			//Input number of tutorials, lab sessions and the corresponding capacity
+			System.out.println("Enter the number of tutorials and lab sessions for this course:");
+			int noOfIds = 0;
+			while (true) {		//Check for valid input
+				try {
+					noOfIds = scan.nextInt();
+					if (noOfIds < 1) {
+						System.out.println("The number of tutorials and lab sessions must be at least 1, please input again:");
+						continue;
+					}
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid input, you must input an integer, please input again:");
+					scan.nextLine();
+				}
+			}
+			System.out.println("Enter the capacity for these tutorial and lab groups:");
+			int capacity = 0;
+			while (true) {		//Check for valid input
+				try {
+					capacity = scan.nextInt();
+					if (capacity < 1) {
+						System.out.println("The number of lectures must be at least 1, please input again:");
+						continue;
+					}
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid input, you must input an integer, please input again:");
+					scan.nextLine();
+				}
+			}
 			
 			//Create new course object and add to course list
 			courseList.put(courseCode, new Course(name, courseCode, prof, 3));
 			courseList.get(courseCode).createLec(noOfLecs, lecCapacity);
-			courseList.get(courseCode).createTut(noOfTuts, tutCapacity);
-			courseList.get(courseCode).createLab(noOfLabs, labCapacity);
+			courseList.get(courseCode).createTut(noOfIds, capacity);
+			courseList.get(courseCode).createLab(noOfIds, capacity);
 		}
 		
 		//Input the grade weightage structure of this
@@ -237,7 +315,7 @@ public class ManageApp {
 		while (true) {		//Check for valid input
 			System.out.println("Choose course grade weightage structure: ");
 			System.out.println("1.Course has exam and coursework weightage without sub-component");
-			System.out.println("2.Course has exam and coursework weightage with two sub-components");
+			System.out.println("2.Course has exam and coursework weightage with two sub-components (assignment and class participation)");
 			try {
 				weightStructure = scan.nextInt();
 				if (weightStructure > 2 || weightStructure <1) {
@@ -317,7 +395,7 @@ public class ManageApp {
 		 */
 		
 		//Input the lecture index to register
-		System.out.printf("Enter the desired lecture index for this course (0-%d):\n", course.getLecs().size()-1);
+		System.out.printf("Enter the desired lecture index for this course (index from 0 to %d):\n", course.getLecs().size()-1);
 		
 		while (true) {		//Ask for input another lecture index if the lecture index has no vacancies or the index is invalid
 			
@@ -338,39 +416,42 @@ public class ManageApp {
 		if (course.getCourseStructure() == 1)
 			return;
 		
-		//Input the tutorial index to register
-		System.out.printf("Enter the desired tutorial index for this course (0-%d):\n", course.getTuts().size()-1);
-		
-		while (true) {		//Ask for input another tutorial index if the tutorial index has no vacancies or the index is invalid
+		//Input the tutorial index to register if this course only has lecture and tutorial
+		if (course.getCourseStructure() == 2) {
+			System.out.printf("Enter the desired tutorial index for this course (index from 0 to %d):\n", course.getTuts().size()-1);
 			
-			try {
-				int tutId = scan.nextInt();
-				if ( ! student.registerTut(courseCode, tutId) ) {
-					System.out.println("Please choose another index:");
-					continue;
+			while (true) {		//Ask for input another tutorial index if the tutorial index has no vacancies or the index is invalid
+				
+				try {
+					int tutId = scan.nextInt();
+					if ( ! student.registerTut(courseCode, tutId) ) {
+						System.out.println("Please choose another index:");
+						continue;
+					}
+					System.out.println("Successfully register this student for tutorial index "+tutId+"\n");
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid index, please choose a valid index:");
+					scan.nextLine();
 				}
-				break;
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid index, please choose a valid index:");
-				scan.nextLine();
 			}
+			return;
 		}
 		
-		//Return if the course only has lectures and tutorials
-		if (course.getCourseStructure() == 2)
-			return;
 		
-		//Input the lab index to register
-		System.out.printf("Enter the desired lab session index for this course (0-%d):\n", course.getLabs().size()-1);
+		//Input the course index to register
+		System.out.printf("Enter the desired tutorial/lab index for this course (index from 0 to %d):\n", course.getTuts().size()-1);
 		
 		while (true) {		//Ask for input another lab index if the lab index has no vacancies or the index is invalid
 			
 			try {
-				int labId = scan.nextInt();
-				if ( ! student.registerLab(courseCode, labId)) {
+				int courseIndex = scan.nextInt();
+				if ( ! student.registerTut(courseCode, courseIndex)) {
 					System.out.println( "Please choose another index:");
 					continue;
 				}
+				student.registerLab(courseCode, courseIndex);
+				System.out.println("Successfully register this student for tutorial/lab index"+"\n");
 				break;
 			}catch (InputMismatchException e){
 				System.out.println("Invalid index, please choose a valid index:");
@@ -383,7 +464,7 @@ public class ManageApp {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("There is no course in the record, please add courses first\n");
 			return;
 		}
 		
@@ -429,7 +510,7 @@ public class ManageApp {
 			else if(choice == 1) {
 				
 				//Input the lecture index to check vacancies
-				System.out.printf("Enter the lecture index you want to check (0-%d):\n", course.getLecs().size()-1);
+				System.out.printf("Enter the lecture index you want to check (index from 0 to %d):\n", course.getLecs().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -456,7 +537,7 @@ public class ManageApp {
 				}
 				
 				//Input the tutorial index
-				System.out.printf("Enter the tutorial index you want to check (0-%d):\n", course.getTuts().size()-1);
+				System.out.printf("Enter the tutorial index you want to check (index from 0 to %d):\n", course.getTuts().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -483,7 +564,7 @@ public class ManageApp {
 				}
 				
 				//Input lab index
-				System.out.printf("Enter the lab session index you want to check (0-%d):\n", course.getLabs().size()-1);
+				System.out.printf("Enter the lab session index you want to check (index from 0 to %d):\n", course.getLabs().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -554,7 +635,7 @@ public class ManageApp {
 			if (choice == 1) {
 				
 				//Input the lecture index to print student list
-				System.out.printf("Enter the lecture index you want to print the student list (0-%d):\n", course.getLecs().size()-1);
+				System.out.printf("Enter the lecture index you want to print the student list (index from 0 to %d):\n", course.getLecs().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -591,7 +672,7 @@ public class ManageApp {
 				}
 				
 				//Input tutorial index to print student list
-				System.out.printf("Enter the tutorial index you want to print the student list (0-%d):\n", course.getTuts().size()-1);
+				System.out.printf("Enter the tutorial index you want to print the student list (index from 0 to %d):\n", course.getTuts().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -628,7 +709,7 @@ public class ManageApp {
 				}
 				
 				//Input lab index
-				System.out.printf("Enter the lab index you want to print the student list (0-%d):\n", course.getLabs().size()-1);
+				System.out.printf("Enter the lab index you want to print the student list (index from 0 to %d):\n", course.getLabs().size()-1);
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -689,8 +770,8 @@ public class ManageApp {
 		while (true) {		//Check for valid weight
 			try {
 				courseWorkWeight = scan.nextDouble();
-				if (courseWorkWeight<0 || courseWorkWeight>100) {
-					System.out.println("The weight of coursework must be in range (0-100), please input again:");
+				if (courseWorkWeight<=0 || courseWorkWeight>=100) {
+					System.out.println("The weight of coursework must be in range (0-100) (exclude 0 and 100), please input again:");
 					continue;
 				}
 				break;
@@ -713,8 +794,8 @@ public class ManageApp {
 		while (true) {		//Check for valid weight
 			try {
 				assignmentWeight = scan.nextDouble();
-				if (assignmentWeight<0 || assignmentWeight>100) {
-					System.out.println("The weight of assignment must be in range (0-100)");
+				if (assignmentWeight<=0 || assignmentWeight>=100) {
+					System.out.println("The weight of assignment must be in range (0-100) (exclude 0 and 100), please input again");
 					continue;
 				}
 				break;
@@ -755,20 +836,32 @@ public class ManageApp {
 		}
 		Student student = studentList.get(matricNo);
 		
+		HashMap<String, GradeRecord> transcript = student.getTranscript();
+		//Check if there is any valid course to enter mark
+		if (transcript.size() == 0) {
+			System.out.println("This student has not registered any course before, please register course for this student first");
+			return;
+		}
+		
+		//Display the course registered by this student for user to choose
+		for (String i: transcript.keySet()) {
+			System.out.println(courseList.get(i));
+		}
+		
 		//Input course code of the corresponding course
-		System.out.println("Enter the corresponding course code to enter mark:");
+		System.out.println("Enter the corresponding course code to enter mark, please choose from the above list:");
 		String courseCode;
 		while (true) {
 			courseCode = scan.nextLine();
-			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
+			if (!transcript.containsKey(courseCode)) {
+				System.out.printf("This student might have not registered for course whose course code is %s, please choose from the above list:\n", courseCode);
 				continue;
 			}
 			break;
 		}
 		Course course = courseList.get(courseCode);
 		
-		HashMap<String, GradeRecord> transcript = student.getTranscript();
+		
 		
 		//Check the whether the student register for the input course
 		if (! transcript.containsKey(courseCode)) {
@@ -870,24 +963,28 @@ public class ManageApp {
 		}
 		Student student = studentList.get(matricNo);
 		
-		//Input course code of the corresponding course
-		System.out.println("Enter the corresponding course code to enter mark:");
-		String courseCode;
+		HashMap<String, GradeRecord> transcript = student.getTranscript();
+		//Check if there is any valid course to enter mark
+		if (transcript.size() == 0) {
+			System.out.println("This student has not registered any course before, please register course for this student first");
+			return;
+		}
 		
-		while (true) {		//Check for valid course code
+		//Display the course registered by this student for user to choose
+		for (String i: transcript.keySet()) {
+			System.out.println(courseList.get(i));
+		}
+		
+		//Input course code of the corresponding course
+		System.out.println("Enter the corresponding course code to enter mark, please choose from the above list:");
+		String courseCode;
+		while (true) {
 			courseCode = scan.nextLine();
-			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
+			if (!transcript.containsKey(courseCode)) {
+				System.out.printf("This student might have not registered for course whose course code is %s, please choose from the above list:\n", courseCode);
 				continue;
 			}
 			break;
-		}
-		
-		//Check whether the student registers for the input course
-		HashMap<String, GradeRecord> transcript = student.getTranscript();
-		if (! transcript.containsKey(courseCode)) {
-			System.out.printf("This student does not register for the course %s\n\n", courseList.get(courseCode));
-			return;
 		}
 		GradeRecord gradeRecord = transcript.get(courseCode);
 		
@@ -1099,7 +1196,7 @@ public class ManageApp {
 			break;
 		}
 		Student student = studentList.get(matricNo);
-		
+		System.out.println(student);
 		HashMap<String,GradeRecord> transcript = student.getTranscript();
 		if (transcript.values().size() == 0) {
 			System.out.println("This student has not registered for any course yet");
