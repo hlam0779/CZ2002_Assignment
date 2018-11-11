@@ -7,12 +7,18 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-// Note : When structure of the Object type (the class file) in the list changed
-// the Serialized file may fail.
+/**
+ * This class contains static method to manipulate the data
+ * @author Group7-SE1
+ * @since 2018-11-09
+ */
 public class SerializeDB
 {
-	/*
+	/**
 	 * read List object from a binary file
+	 * given the file name
+	 * @param filename The file name that need to be read
+	 * @return List object
 	 */
 	public static List readSerializedListObject(String filename) {
 		List pDetails = null;
@@ -32,9 +38,11 @@ public class SerializeDB
 		return pDetails;
 	}
 	
-	/*
+	/**
 	 * read Data object from a binary file and create one if there is no such file
 	 * (Data class is created in this assignment)
+	 * @param filename The file name that need to be read
+	 * @return Data object
 	 */
 	public static Data readSerializedDataObject(String filename) {
 		Data data = null;
@@ -54,9 +62,11 @@ public class SerializeDB
 		return data;
 	}
 	
-	/*
+	/**
 	 * Store List Object in a binary file 
-	 * (this function is not used in this assignment because the data is stored as a Data object
+	 * (this function is not used in this assignment because the data is stored as a Data object)
+	 * @param filename	The file name that need to be written into
+	 * @param list		The list object that need to be written into file
 	 */
 	public static void writeSerializedListObject(String filename, List list) {
 		FileOutputStream fos = null;
@@ -71,8 +81,10 @@ public class SerializeDB
 		}
 	}
 	
-	/*
+	/**
 	 * Store Data object in a binary file
+	 * @param filename	The file name that need to be written into
+	 * @param data		The Data object that need to be written into file
 	 */
 	public static void writeSerializedDataObject(String filename, Data data) {
 		FileOutputStream fos = null;
