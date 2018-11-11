@@ -1,10 +1,12 @@
 import java.util.HashSet;
 import java.io.Serializable;
 
+/**
+ * Represent a grade of a student in a specific course
+ * @author Group7-SE1
+ * @since 2018-11-09
+ */
 public class GradeRecord implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3502479376698527151L;
 	private Course course;
 	private double coursework;						/*Coursework grade for the corresponding course, this is calculated based on 
@@ -18,12 +20,15 @@ public class GradeRecord implements Serializable{
 	private String statusMessage;							/*This will be printed to inform the error when trying to 
 													 *get access to the grade that has not been successfully calculated
 													 */
-	public boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
-	public boolean alreadyEnterClassParticipationGrade;	//(true if grade has already been entered by some administrator and
-	public boolean alreadyEnterExamGrade;				//false otherwise, these variables are set to public for convenience
-	public boolean alreadyEnterCourseworkGrade; // this variable will be used if the course weightage structure is 1
+	private boolean alreadyEnterAssignmentGrade;			//These three variable indicating the grade status 
+	private boolean alreadyEnterClassParticipationGrade;	//(true if grade has already been entered by some administrator and
+	private boolean alreadyEnterExamGrade;				//false otherwise
+	private boolean alreadyEnterCourseworkGrade; // this variable will be used if the course weightage structure is 1
 	
-	
+	/**
+	 * create a grade record with a course
+	 * @param course	The course that this grade record object refer to
+	 */
 	public GradeRecord(Course course) {
 		this.course = course;
 		this.alreadyEnterAssignmentGrade = false;
@@ -32,41 +37,100 @@ public class GradeRecord implements Serializable{
 		this.alreadyEnterCourseworkGrade = false;
 	}
 	
+	/**
+	 * Set the exam grade
+	 * @param grade	The value of the exam grade
+	 */
 	public void setExam(double grade) {
 		exam = grade;
 		this.alreadyEnterExamGrade = true;
 	}
 	
+	/**
+	 * Set the assignment grade
+	 * @param grade	The value of assignment grade
+	 */
 	public void setAssigment(double grade) {
 		assignment = grade;
 		this.alreadyEnterAssignmentGrade = true;
 	}
 	
+	/**
+	 * Set the class participation grade
+	 * @param grade	The value of class participation grade
+	 */
 	public void setClassParticipation(double grade) {
 		classParticipation = grade;
 		this.alreadyEnterClassParticipationGrade = true;
 	}
 	
+	/**
+	 * Set the coursework grade
+	 * @param grade	The value of the coursework grade
+	 */
 	public void setCoursework(double grade) {
 		this.coursework = grade;
 		this.alreadyEnterCourseworkGrade = true;
 	}
 	
-	
+	/**
+	 * Get the coursework grade
+	 * @return this grade record's coursework
+	 */
 	public double getCoursework() { return coursework; }
 	
+	/**
+	 * Get the exam grade
+	 * @return this grade record's exam
+	 */
 	public double getExam() { return exam; }
 	
+	/**
+	 * Get the assignment grade
+	 * @return this grade record's assignment
+	 */
 	public double getAssignment() { return assignment; }
 	
+	/**
+	 * Get the class participation grade
+	 * @return this grade record's class participation
+	 */
 	public double getClassParticipation() { return classParticipation; }
 	
+	/**
+	 * Get the overall grade
+	 * @return this grade record's overall grade
+	 */
 	public double getOverallGrade() { return overallGrade; }
 	
+	/**
+	 * Get the coursework status
+	 * @return coursework status
+	 */
+	public boolean getCourseworkStatus() { return this.alreadyEnterCourseworkGrade; }
 	
-	/*
+	/**
+	 * Get the assignment grade status
+	 * @return assignment status
+	 */
+	public boolean getAssignmentStatus() { return this.alreadyEnterAssignmentGrade; }
+	
+	/**
+	 * Get the class participation grade status
+	 * @return class participation grade status
+	 */
+	public boolean getClassParticipationStatus() { return this.alreadyEnterClassParticipationGrade; }
+	
+	/**
+	 * Get the exam status
+	 * @return exam status
+	 */
+	public boolean getExamStatus() { return this.alreadyEnterExamGrade; }
+	
+	/**
 	 * Calculate the coursework grade based on the assignment and class participation grade
 	 * and inform error if there is some missing required information to calculate them
+	 * @return boolean value indicating the update status
 	 */
 	public boolean updateCoursework() { 
 		
@@ -86,9 +150,10 @@ public class GradeRecord implements Serializable{
 	}
 	
 	
-	/*
+	/**
 	 * Calculate the overall grade based on the coursework and exam grade
 	 * and inform error if there is some missing required information to calculate them
+	 * @return boolean value indicating the calculation status
 	 */
 	public boolean calOverallGrade() {
 		
@@ -117,8 +182,9 @@ public class GradeRecord implements Serializable{
 		return true;
 	}
 	
-	/*
-	 *This is used for printing the grade in the printTranscript method of ManageApp  
+	/**
+	 *This is used for printing the grade in the printTranscript method of ManageApp
+	 *@return general grade information of this grade record
 	 */
 	@Override
 	public String toString() {
@@ -132,5 +198,4 @@ public class GradeRecord implements Serializable{
 			return "Course: "+course+String.format("    Coursework(%d%%): %.1f/100",(int) course.getCourseworkWeight(), coursework)+String.format("    Exam(%d%%): %.1f/100",(int) course.getExamWeight(),exam)+String.format("    OverallGrade: %.1f/100", overallGrade);
 		return "Course: "+course+"    status: "+statusMessage;
 	}
-	
 }
