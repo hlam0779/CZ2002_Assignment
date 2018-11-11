@@ -2,11 +2,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.io.Serializable;
 
-
+/**
+ * Represent a course in the school
+ * @author Group7-SE1
+ * @since 2018-11-09
+ */
 public class Course implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5023061144746896737L;
 	private String name;						
 	private String courseCode;
@@ -32,6 +33,13 @@ public class Course implements Serializable{
 	private int totalTutVacancies;
 	private int totalLabVacancies;
 	
+	/**
+	 * Create a course with a name, code, a professor as a coordinator and a course structure
+	 * @param name	This course's name
+	 * @param courseCode	This course's code
+	 * @param prof	This course's coodinator
+	 * @param courseStructure	This course's structure
+	 */
 	public Course(String name, String courseCode, Professor prof, int courseStructure) {
 		this.name = name;
 		this.courseCode = courseCode;
@@ -56,98 +64,195 @@ public class Course implements Serializable{
 		}	
 	}
 	
+	/**
+	 * Get the structure of this course
+	 * @return	this course's structure
+	 */
 	public int getCourseStructure() { return courseStructure; }
 	
+	/**
+	 * Get the assessment weight structure of this course
+	 * @return	this course's assessment weight structure
+	 */
 	public int getWeightStructure() { return weightStructure; }
 	
+	/**
+	 * Get the code of this course
+	 * @return this course's code
+	 */
 	public String getCourseCode() { return courseCode; }
 	
+	/**
+	 * Get the name of this course
+	 * @return this course's name
+	 */
 	public String getName() { return name; }
 	
+	/**
+	 * Get the coordinator of this course
+	 * @return this course's coordinator
+	 */
 	public Professor getCoordinator() { return coordinator; }
 	
+	/**
+	 * Get the tutorials list of this course
+	 * @return this course's tutorials list (using arrayList structure to represent)
+	 */
 	public ArrayList<Tutorial> getTuts() { return tuts; }
 	
+	/**
+	 * Get the lab sessions list of this course
+	 * @return this course's lab sessions list (using arrayList structure to represent)
+	 */
 	public ArrayList<Lab> getLabs() { return labs; }
 	
+	/**
+	 * Get the lectures list of this course
+	 * @return this course's lectures list (using arrayList structure to represent)
+	 */
 	public ArrayList<Lecture> getLecs() { return lecs; }
 	
+	/**
+	 * Get the students list of this course
+	 * @return this course's student list (using hashSet structure to represent)
+	 */
 	public HashSet<Student> getStudents() { return Students; }
 	
+	/**
+	 * Set the assessment weight structure of this course
+	 * @param weightStructure this course's assessment weight structure
+	 */
 	public void setWeightStructure(int weightStructure) { 
 		this.weightStructure = weightStructure;
 	}
 	
-	
+	/**
+	 * create tutorials for this course
+	 * @param noOfTut	Number of tutorials of this course
+	 * @param capacity	This course's tutorial capacity
+	 */
 	public void createTut(int noOfTut, int capacity) {
 		for (int i=0; i<noOfTut; i++)
 			this.tuts.add(new Tutorial(this, this.tuts.size(), capacity));
 		totalTutVacancies = noOfTut*capacity;
 	}
 	
+	/**
+	 * Create lab sessions for this course
+	 * @param noOfLab	Number of lab sessions of this course
+	 * @param capacity	This course's lab capacity
+	 */
 	public void createLab(int noOfLab, int capacity) {
 		for (int i=0; i<noOfLab; i++)
 			this.labs.add(new Lab(this, this.labs.size(), capacity));
 		totalLabVacancies = noOfLab*capacity;
 	}
 	
+	/**
+	 * Create lectures for this course
+	 * @param noOfLec	Number of lectures of this course
+	 * @param capacity	This course's lecture capacity
+	 */
 	public void createLec(int noOfLec, int capacity) {
 		for (int i=0; i<noOfLec; i++)
 			this.lecs.add(new Lecture(this, this.lecs.size(), capacity));
 		totalLecVacancies = noOfLec*capacity;
 	}
 	
+	/**
+	 * Reduce the total lecture vacancies by 1
+	 */
 	public void reduceLecVacancies() {
 		totalLecVacancies--;
 	}
 	
+	/**
+	 * Reduce the total tutorial vacancies by 1
+	 */
 	public void reduceTutVacancies() {
 		totalTutVacancies--;
 	}
 	
+	/**
+	 * Reduce the total lab vacancies by 1
+	 */
 	public void reduceLabVacancies() {
 		totalLabVacancies--;
 	}
 	
+	/**
+	 * Return true if this course has vacancies
+	 * @return boolean value indicating whether this course has vacancies
+	 */
 	public boolean hasVacancies() {
 		if (courseStructure == 1)
 			return ! (totalLecVacancies == 0);
 		return ! (totalLecVacancies == 0 || totalTutVacancies == 0);
 		
 	}
-
+	
+	/**
+	 * Get coursework weight of this course
+	 * @return this course's coursework weight
+	 */
 	public double getCourseworkWeight() { return courseworkWeight; }
 	
+	/**
+	 * Get exam weight of this course
+	 * @return this course's exam weight
+	 */
 	public double getExamWeight() { return examWeight; }
 	
+	/**
+	 * Get assignment weight of this course
+	 * @return this course's assignment weight
+	 */
 	public double getAssignmentWeight() { return assignmentWeight; }
 	
+	/**
+	 * Get the class participation weight of this course
+	 * @return this course's class participation weight
+	 */
 	public double getClassParticipationWeight() { return classParticipationWeight; }
 	
+	/**
+	 * Check if this course assessment weight has been fully entered
+	 * @return boolean indicating the assessment weightage status
+	 */
 	public boolean getAsessmentWeightageStatus() {
 		if (weightStructure == 2)
 			return this.alreadyAddAsessmentWeight && this.alreadyAddSubComponentWeightOfCoursework;
 		return this.alreadyAddAsessmentWeight;
 	}
 	
+	/**
+	 * Check whether the subcomponent weight of coursework has been fully entered
+	 * @return boolean indicating the coursework weightage status
+	 */
 	public boolean getCourseworkWeightageStatus() {
 		return this.alreadyAddSubComponentWeightOfCoursework;
 	}
 	
+	/**
+	 * Get the total vacancies of this course
+	 * @return	this course's number of vancies
+	 */
 	public int getVancancies() {
 		if (courseStructure >= 2)
 			return Math.min(totalLecVacancies, totalTutVacancies);
 		return totalLecVacancies;
 	}
 	
-	public String getCourseInfo() {
-		return toString()+"     Coordinator: Prof "+coordinator;
-	}
 	
-	/* Register student to a specific tutorial index of this course 
+	
+	/**
+	 * Register student to a specific tutorial index of this course 
 	 * Return true if successfully register, and false otherwise
+	 * @param student	The student that need to be registered
+	 * @param tutId		The tutorial index
+	 * @return boolean value indicating the register status
 	 */
-	public boolean registerTut(Student s, int tutId) {
+	public boolean registerTut(Student student, int tutId) {
 		
 		//Check to ensure legal tutorial index
 		if (tutId<0 || tutId>=tuts.size()) {
@@ -156,17 +261,21 @@ public class Course implements Serializable{
 		}
 		
 		//register student to the lab and add student to student list of this course
-		if (tuts.get(tutId).addStudent(s)) {
-			Students.add(s);
+		if (tuts.get(tutId).addStudent(student)) {
+			Students.add(student);
 			return true;
 		}
 		return false;
 	}
 	
-	/* Register student to a specific lab index of this course 
+	/**
+	 * Register student to a specific lab index of this course 
 	 * Return true if successfully register, and false otherwise
+	 * @param student	The student that need to be registered
+	 * @param labId		The lab index
+	 * @return boolean value indicating the register status
 	 */
-	public boolean registerLab(Student s, int labId) {
+	public boolean registerLab(Student student, int labId) {
 		
 		//Check to ensure legal lab index
 		if (labId<0 || labId>=labs.size()) {
@@ -175,18 +284,22 @@ public class Course implements Serializable{
 		}
 		
 		//register student to the lab and add student to student list of this course
-		if (labs.get(labId).addStudent(s)) {
-			Students.add(s);
+		if (labs.get(labId).addStudent(student)) {
+			Students.add(student);
 			return true;
 		}
 		return false;
 	}
 	
 	
-	/* Register student to a specific lecture index of this course 
+	/**
+	 * Register student to a specific lecture index of this course 
 	 * Return true if successfully register, and false otherwise
+	 * @param student	The student that need to be registered
+	 * @param lecId		The lecture index
+	 * @return boolean value indicating the register status
 	 */
-	public boolean registerLec(Student s, int lecId) {
+	public boolean registerLec(Student student, int lecId) {
 		
 		//Check to ensure legal lecture index
 		if (lecId<0 || lecId>=lecs.size()) {
@@ -195,17 +308,18 @@ public class Course implements Serializable{
 		}
 		
 		//register student to the lecture and add student to student list of this course
-		if (lecs.get(lecId).addStudent(s)) {
-			Students.add(s);
+		if (lecs.get(lecId).addStudent(student)) {
+			Students.add(student);
 			return true;
 		}
 		return false;
 	}
 	
 	
-	/*
+	/**
 	 * Set coursework and exam weight and update assessment weight status 
 	 * by set true the corresponding boolean variable
+	 * @param weight	The value of coursework weight
 	 */
 	public void setCourseworkWeight(double weight) {
 		this.courseworkWeight = weight;
@@ -215,8 +329,10 @@ public class Course implements Serializable{
 	}
 	
 	
-	/*set assignment weight and class participation weight and update the assessment weight of the sub-components of coursework 
+	/**
+	 * set assignment weight and class participation weight and update the assessment weight of the sub-components of coursework 
 	 * by set to true the corresponding boolean variable
+	 * @param weight	The value of assignment weight
 	 */
 	public void setAssignmentWeight(double weight) {
 		this.assignmentWeight = weight;
@@ -225,6 +341,10 @@ public class Course implements Serializable{
 		System.out.println("The class participation weight of the coursework is automatically set to "+this.classParticipationWeight);
 	}
 	
+	/**
+	 * Get the information of this course's name and code
+	 * @return message that mentions this course's name and code
+	 */
 	@Override
 	public String toString() {
 		return this.name+"("+this.courseCode+")";
