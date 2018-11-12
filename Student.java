@@ -14,9 +14,7 @@ public class Student implements Serializable{
 	private static final long serialVersionUID = -1110733458217604607L;
 	private String name;								
 	private String matricNo;							
-	private int yearOfBirth;
 	private String major;
-	private int yearOfAdmission;
 	private HashMap<String,GradeRecord>  transcript;		//Map a course code to a grade record
 	public static int noOfStudents;
 	
@@ -31,12 +29,10 @@ public class Student implements Serializable{
 	 * @param yearOfAdmission	Student's year of admission
 	 * @param major	  Student's major
 	 */
-	public Student(String name, String matricNo, int yearOfBirth, int yearOfAdmission, String major) {
+	public Student(String name, String matricNo, String major) {
 		this.name = name;
 		this.matricNo = matricNo;
-		this.yearOfBirth = yearOfBirth;
 		this.major = major;
-		this.yearOfAdmission = yearOfAdmission;
 		this.transcript = new HashMap<String,GradeRecord>();
 		noOfStudents++;
 	}
@@ -58,18 +54,6 @@ public class Student implements Serializable{
 	 * @return this student's major
 	 */
 	public String getMajor() { return major; }
-	
-	/**
-	 * Get birth year of this student
-	 * @return this student's birth year
-	 */
-	public int yearOfBirth() { return yearOfBirth; }
-	
-	/**
-	 * Get year of admission of this student
-	 * @return this student's year of birth
-	 */
-	public int getYearOfAdmission() { return yearOfAdmission; }
 	
 	/**
 	 * Get the transcript of this student
