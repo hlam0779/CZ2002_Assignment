@@ -8,7 +8,7 @@ import java.io.*;
 
 /**
  * The main application to manage user manipulation of data
-@author Group7-SE1
+ * @author Group7-SE1
  * @since 2018-11-09
  */
 public class ManageApp {
@@ -103,30 +103,8 @@ public class ManageApp {
 		
 		System.out.println("Enter major:");
 		String major = scan.nextLine();
-		System.out.println("Enter year of birth:");
-		int yearOfBirth,yearOfAdmission;
-		while (true) {		//Check for valid input
-			try {
-				yearOfBirth = scan.nextInt();
-				break;
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input an integer, please input year of birth again:");
-				scan.nextLine();
-			}
-		}
 		
-		System.out.println("Enter year of admission:");
-		while (true) {		//Check for valid input
-			try {
-				yearOfAdmission = scan.nextInt();
-				break;
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input an integer, please input year of admission again:");
-				scan.nextLine();
-			}
-		}
-		
-		studentList.put(matricNo,new Student(name,matricNo,yearOfBirth,yearOfAdmission,major));
+		studentList.put(matricNo,new Student(name,matricNo,major));
 		System.out.println("Successfully add this student to the record");
 		System.out.println("The current student list:");
 		for (Student s: studentList.values()) {
@@ -1208,8 +1186,8 @@ public class ManageApp {
 				int choice;
 				System.out.println("Choose Outcome type:");
 				System.out.println("1. Overall percentage (exam + coursework)");
-				System.out.println("2. Exam only");
-				System.out.println("3. Coursework only");
+				System.out.println("2. Exam percentage only");
+				System.out.println("3. Coursework percentage only");
 				System.out.println("4. Return");
 				
 				choice = scan.nextInt();
