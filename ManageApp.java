@@ -106,7 +106,7 @@ public class ManageApp {
 		
 		studentList.put(matricNo,new Student(name,matricNo,major));
 		System.out.println("Successfully add this student to the record");
-		System.out.println("The current student list:");
+		System.out.println("\nThe current student list:");
 		for (Student s: studentList.values()) {
 			System.out.println(s);
 		}
@@ -145,10 +145,11 @@ public class ManageApp {
 		boolean valid = false;  //indicating whether the input professor name is in the record
 		
 		//Display the professor list for user to choose
+		System.out.println("\nThe professor list:");
 		for (Professor i: profList) {
 			System.out.println(i);
 		}
-		System.out.println("Enter coordinator name, please choose from the list above:");
+		System.out.println("\nEnter coordinator name, please choose from the list above:");
 		while (true){		//Ensure the valid input of professor name
 			profName = scan.nextLine();
 			for (Professor i: profList) {
@@ -323,7 +324,7 @@ public class ManageApp {
 			break;
 		}
 		System.out.println("Successfully add this course to the record");
-		System.out.println("The current course list:");
+		System.out.println("\nThe current course list:");
 		for (Course c: courseList.values()) {
 			System.out.println(c);
 		}
@@ -348,12 +349,13 @@ public class ManageApp {
 		}
 		
 		//Display the student list for user to choose
+		System.out.println("\nThe current student list:");
 		for (Student i: studentList.values()) {
 			System.out.println(i);
 		}
 		//Input the matric number of the corresponding student to register
 		String matricNo, courseCode;
-		System.out.println("Enter the student matric number, please choose from the above list:");
+		System.out.println("\nEnter the student matric number, please choose from the above list:");
 		scan.nextLine();
 		while (true) {
 			matricNo = scan.nextLine();
@@ -366,11 +368,12 @@ public class ManageApp {
 		Student student = studentList.get(matricNo);
 		
 		//Display the course list for users to choose
+		System.out.println("\nThe current course list:");
 		for (Course i: courseList.values()) {
 			System.out.println(i);
 		}
 		//Input the course code of the corresponding course to register
-		System.out.println("Enter the course code, please choose from the above list:");
+		System.out.println("\nEnter the course code, please choose from the above list:");
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
@@ -455,7 +458,7 @@ public class ManageApp {
 					continue;
 				}
 				student.registerLab(courseCode, courseIndex);
-				System.out.println("Successfully register this student for tutorial/lab index"+ courseIndex+"\n");
+				System.out.println("Successfully register this student for tutorial/lab index "+ courseIndex+"\n");
 				break;
 			}catch (InputMismatchException e){
 				System.out.println("Invalid index, please choose a valid index:");
@@ -476,11 +479,12 @@ public class ManageApp {
 		}
 		
 		//Display the course list for users to choose
+		System.out.println("\nThe current course list:");
 		for (Course i: courseList.values()) {
 			System.out.println(i);
 		}
 		//Input the course code of the corresponding course to check
-		System.out.println("Enter course code, please choose from the list above:");
+		System.out.println("\nEnter course code, please choose from the list above:");
 		scan.nextLine();
 		String courseCode;
 		while (true) {
@@ -609,11 +613,12 @@ public class ManageApp {
 		}
 		
 		//Display the course list for users to choose
+		System.out.println("\nThe current course list:");
 		for (Course i: courseList.values()) {
 			System.out.println(i);
 		}
 		//Input the course code of the corresponding course to print student list
-		System.out.println("Enter the course code, please choose from the list above:");
+		System.out.println("\nEnter the course code, please choose from the list above:");
 		scan.nextLine();
 		String courseCode;
 		while (true) {
@@ -669,7 +674,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				Lecture lecture = course.getLecs().get(index);
+				CourseComponent lecture = course.getLecs().get(index);
 				
 				//Check if no student registers for this lecture index
 				if (lecture.getStudents().size() == 0)
@@ -706,7 +711,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				Tutorial tut = course.getTuts().get(index);
+				CourseComponent tut = course.getTuts().get(index);
 				
 				//Check if no student registers for this tutorial index
 				if (tut.getStudents().size() == 0)
@@ -743,7 +748,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				Lab lab = course.getLabs().get(index);
+				CourseComponent lab = course.getLabs().get(index);
 				
 				//Check if no student registers for this lab index
 				if (lab.getStudents().size() == 0)
@@ -770,11 +775,12 @@ public class ManageApp {
 		}
 		
 		//Display the course list for users to choose
+		System.out.println("\nThe current course list:");
 		for (Course i: courseList.values()) {
 			System.out.println(i);
 		}
 		//Input the course code of the corresponding course to set assessment weight
-		System.out.println("Enter the course code, please choose from the list above:");
+		System.out.println("\nEnter the course code, please choose from the list above:");
 		scan.nextLine();
 		String courseCode;
 		
@@ -787,6 +793,29 @@ public class ManageApp {
 			break;
 		}
 		Course course = courseList.get(courseCode);
+		
+		if (course.getAsessmentWeightageStatus()) {
+			System.out.println("\nThe assessment weightage of this course has been set before");
+			System.out.println("Choose whether you want to continue:");
+			System.out.println("1.Enter assessment weightage for this course again");
+			System.out.println("2.Back");
+			int choice;
+			while (true) {
+				try {
+					choice = scan.nextInt();
+					if (choice<1 || choice>2) {
+						System.out.println("Your choice must be either 1 or 2, please choose again:");
+						continue;
+					}
+					if (choice == 2)
+						return;
+					break;
+				} catch (InputMismatchException e) {
+					System.out.println("Invalid choice, you must input 1 or 2, please choose again:");
+					scan.nextLine();
+				}
+			}
+		}
 		
 		//Input assessment weight for coursework
 		System.out.println("Enter the assessment weight of coursework(0-100):");
@@ -809,7 +838,7 @@ public class ManageApp {
 		
 		//Check if this course's coursework has sub-component weightage or not
 		if (course.getWeightStructure() == 1) {
-			System.out.println("Successfully set assessment weight of coursework and exam\n");
+			System.out.println("\nSuccessfully set assessment weight of coursework and exam\n");
 			return;
 		}
 		//Input weight for assignment
@@ -830,7 +859,7 @@ public class ManageApp {
 			}
 		}
 		course.setAssignmentWeight(assignmentWeight);
-		System.out.println("Successfully set assessment weight of coursework, exam and coursework's component\n");
+		System.out.println("\nSuccessfully set assessment weight of coursework, exam and coursework's component\n");
 	}
 	
 	/**
@@ -851,11 +880,12 @@ public class ManageApp {
 		}
 		
 		//Display student list for user choose
+		System.out.println("\nThe current student list:");
 		for ( Student s: studentList.values()) {
 			System.out.println(s);
 		}
 		//Input matric number of the corresponding student
-		System.out.println("Enter the student matric number to enter grade, please choose from the list above:");
+		System.out.println("\nEnter the student matric number to enter grade, please choose from the list above:");
 		scan.nextLine();
 		String matricNo;
 		while (true) {
@@ -876,12 +906,13 @@ public class ManageApp {
 		}
 		
 		//Display the course registered by this student for user to choose
+		System.out.println("\nThe list of courses registered by this student:");
 		for (String i: transcript.keySet()) {
 			System.out.println(courseList.get(i));
 		}
 		
 		//Input course code of the corresponding course
-		System.out.println("Enter the corresponding course code to enter mark, please choose from the above list:");
+		System.out.println("\nEnter the corresponding course code to enter mark, please choose from the above list:");
 		String courseCode;
 		while (true) {
 			courseCode = scan.nextLine();
@@ -904,7 +935,7 @@ public class ManageApp {
 		//Check if this course's coursework does not have sub-components
 		if (course.getWeightStructure() == 1) {
 			if (gradeRecord.getCourseworkStatus()) {
-				System.out.println("In this student transcript, the coursework grade of this course has been entered before");
+				System.out.println("\nIn this student transcript, the coursework grade of this course has been entered before");
 				System.out.println("Choose whether you want to continue:");
 				System.out.println("1.Enter coursework grade for this student again");
 				System.out.println("2.Back");
@@ -946,7 +977,7 @@ public class ManageApp {
 		}
 		
 		if (gradeRecord.getAssignmentStatus()) {
-			System.out.println("In this student transcript, the coursework components grade of this course has been entered before");
+			System.out.println("\nIn this student transcript, the coursework components grade of this course has been entered before");
 			System.out.println("Choose whether you want to continue:");
 			System.out.println("1.Enter coursework components grade for this student again");
 			System.out.println("2.Back");
@@ -1022,11 +1053,12 @@ public class ManageApp {
 		}
 		
 		//Display student list for users to choose
+		System.out.println("\nThe current student list:");
 		for (Student s: studentList.values()) {
 			System.out.println(s);
 		}
 		//Input matric number of the corresponding student
-		System.out.println("Enter the student matric number to enter grade, please choose from the list above:");
+		System.out.println("\nEnter the student matric number to enter grade, please choose from the list above:");
 		scan.nextLine();
 		String matricNo;
 		
@@ -1048,12 +1080,13 @@ public class ManageApp {
 		}
 		
 		//Display the course registered by this student for user to choose
+		System.out.println("\nThe list of courses registered by this student:");
 		for (String i: transcript.keySet()) {
 			System.out.println(courseList.get(i));
 		}
 		
 		//Input course code of the corresponding course
-		System.out.println("Enter the corresponding course code to enter mark, please choose from the above list:");
+		System.out.println("\nEnter the corresponding course code to enter mark, please choose from the above list:");
 		String courseCode;
 		while (true) {
 			courseCode = scan.nextLine();
@@ -1066,7 +1099,7 @@ public class ManageApp {
 		GradeRecord gradeRecord = transcript.get(courseCode);
 		
 		if (gradeRecord.getExamStatus()) {
-			System.out.println("In this student transcript, the exam grade of this course has been entered before");
+			System.out.println("\nIn this student transcript, the exam grade of this course has been entered before");
 			System.out.println("Choose whether you want to continue:");
 			System.out.println("1.Enter coursework components grade for this student again");
 			System.out.println("2.Back");
@@ -1121,14 +1154,19 @@ public class ManageApp {
 			return;
 		}
 		
+		//Display the course list for user to choose
+		System.out.println("\nThe current course list:");
+		for (Course i: courseList.values())
+			System.out.println(i);
+		
 		//Input the course code to print statistics
-		System.out.println("Enter the course code:");
+		System.out.println("\nEnter the course code, please choose from the list above:");
 		String courseCode;
 		
 		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (! courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please input again:\n", courseCode);
+				System.out.printf("There is no course whose course code is %s, please choose from the list above and input again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -1172,7 +1210,6 @@ public class ManageApp {
 		 * Calculate the grade percentage, there are five groups of grade and 
 		 * one unknown group which indicates student whose grade has not been updated yet
 		 */
-		System.out.println();
 		//System.out.println("The below table shows how the percentage of students is distributed among groups of grade for each course component");
 		double first = 0;
 		double second = 0;
@@ -1184,6 +1221,7 @@ public class ManageApp {
 		while (true) {
 			try {
 				int choice;
+				System.out.println();
 				System.out.println("Choose Outcome type:");
 				System.out.println("1. Overall percentage (exam + coursework)");
 				System.out.println("2. Exam percentage only");
@@ -1192,7 +1230,7 @@ public class ManageApp {
 				
 				choice = scan.nextInt();
 				if (choice < 1 || choice > 4){
-					System.out.println("Invalid choice, your choice must be between 1 and 4, please input again:");
+					System.out.println("your choice must be between 1 and 4, please input again:");
 					continue;
 
 				}
@@ -1221,7 +1259,7 @@ public class ManageApp {
 						fifthPercentage = fifth/students.size()*100.0;
 						unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
 						
-						System.out.println("The below table shows how the percentage of students is distributed among groups of grade for overall grade");
+						System.out.println("\nThe below table shows how the percentage of students is distributed among groups of grade for overall grade");
 						System.out.println("GradeGroup       80-100     60-80     40-60     20-40     0-20     unknown");
 						System.out.printf( "OverallGrade(%%)  %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
 																	thirdPercentage, fourthPercentage, fifthPercentage, unknown);
@@ -1250,7 +1288,7 @@ public class ManageApp {
 						fifthPercentage = fifth/students.size()*100.0;
 						unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
 					
-						System.out.println("The below table shows how the percentage of students is distributed among groups of grade for exam grade only");
+						System.out.println("\nThe below table shows how the percentage of students is distributed among groups of grade for exam grade only");
 						System.out.println("GradeGroup       80-100     60-80     40-60     20-40     0-20     unknown");
 						System.out.printf( "Exam(%%)          %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
 																	thirdPercentage, fourthPercentage, fifthPercentage, unknown);
@@ -1292,7 +1330,7 @@ public class ManageApp {
 						fifthPercentage = fifth/students.size()*100.0;
 						unknown = 100 - firstPercentage - secondPercentage - thirdPercentage - fourthPercentage - fifthPercentage;
 						
-						System.out.println("The below table shows how the percentage of students is distributed among groups of grade for coursework grade only");
+						System.out.println("\nThe below table shows how the percentage of students is distributed among groups of grade for coursework grade only");
 						System.out.println("GradeGroup       80-100     60-80     40-60     20-40     0-20     unknown");
 						System.out.printf( "Coursework(%%)    %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
 																	thirdPercentage, fourthPercentage, fifthPercentage, unknown);
@@ -1317,15 +1355,20 @@ public class ManageApp {
 			return;
 		}
 		
+		//Display student list user to choose
+		System.out.println("\nThe current student list:");
+		for (Student i: studentList.values())
+			System.out.println(i);
+		
 		//Input student matric number
-		System.out.println("Enter the student matric number:");
+		System.out.println("\nEnter the student matric number, please choose from the list above:");
 		scan.nextLine();
 		String matricNo;
 		
 		while (true) {		//Check for valid matric number
 			matricNo = scan.nextLine();
 			if (!studentList.containsKey(matricNo)) {
-				System.out.printf("There is no student whose matric number is %s, please input again:\n", matricNo);
+				System.out.printf("There is no student whose matric number is %s, please choose from the list above and input again:\n", matricNo);
 				continue;
 			}
 			break;
