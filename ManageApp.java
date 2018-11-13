@@ -1348,7 +1348,7 @@ public class ManageApp {
 	 * Print transcript of a student
 	 */
 	public static void printStudentTranscript() {
-		
+		scan.nextLine();
 		//Check if there is any student in the record
 		if (studentList.size() == 0) {
 			System.out.println("There is no student in the record, please add student first:");
@@ -1362,17 +1362,13 @@ public class ManageApp {
 		
 		//Input student matric number
 		System.out.println("\nEnter the student matric number, please choose from the list above:");
-		scan.nextLine();
-		String matricNo;
+		String matricNo = scan.nextLine();
 		
-		while (true) {		//Check for valid matric number
+		while (!studentList.containsKey(matricNo)) {		//Check for valid matric number
+			System.out.printf("There is no student whose matric number is %s, please choose from the list above and input again:\n", matricNo);
 			matricNo = scan.nextLine();
-			if (!studentList.containsKey(matricNo)) {
-				System.out.printf("There is no student whose matric number is %s, please choose from the list above and input again:\n", matricNo);
-				continue;
-			}
-			break;
 		}
+		
 		Student student = studentList.get(matricNo);
 		System.out.println(student);
 		HashMap<String,GradeRecord> transcript = student.getTranscript();
