@@ -26,9 +26,9 @@ public class Course implements Serializable{
 	 														    (true if the assessment weight of assignment and class participation has been entered
 	 														    by the administrator and false otherwise*/
 	private HashSet<Student> Students;				//Students who has registered this course
-	private ArrayList<Lecture> lecs;				//Lectures of this course
-	private ArrayList<Tutorial> tuts;				//Tutorials of this course
-	private ArrayList<Lab> labs;					//Lab sessions of this course
+	private ArrayList<CourseComponent> lecs;				//Lectures of this course
+	private ArrayList<CourseComponent> tuts;				//Tutorials of this course
+	private ArrayList<CourseComponent> labs;					//Lab sessions of this course
 	private int totalLecVacancies;
 	private int totalTutVacancies;
 	private int totalLabVacancies;
@@ -45,7 +45,7 @@ public class Course implements Serializable{
 		this.courseCode = courseCode;
 		this.coordinator = prof;
 		this.courseStructure = courseStructure;
-		this.lecs = new ArrayList<Lecture>();
+		this.lecs = new ArrayList<CourseComponent>();
 		this.Students = new HashSet<Student>();
 		this.tuts = null;
 		this.labs = null;
@@ -53,12 +53,12 @@ public class Course implements Serializable{
 		this.alreadyAddSubComponentWeightOfCoursework = false;
 		totalLecVacancies = 0;
 		if (courseStructure == 2) {
-			this.tuts = new ArrayList<Tutorial>();
+			this.tuts = new ArrayList<CourseComponent>();
 			totalTutVacancies = 0;
 		}
 		else if (courseStructure == 3){
-			this.tuts = new ArrayList<Tutorial>();
-			this.labs = new ArrayList<Lab>();
+			this.tuts = new ArrayList<CourseComponent>();
+			this.labs = new ArrayList<CourseComponent>();
 			totalTutVacancies = 0;
 			totalLabVacancies = 0;
 		}	
@@ -96,25 +96,25 @@ public class Course implements Serializable{
 	
 	/**
 	 * Get the tutorials list of this course
-	 * @return this course's tutorials list (using arrayList structure to represent)
+	 * @return this course's tutorials list (using ArrayList structure to represent)
 	 */
-	public ArrayList<Tutorial> getTuts() { return tuts; }
+	public ArrayList<CourseComponent> getTuts() { return tuts; }
 	
 	/**
 	 * Get the lab sessions list of this course
-	 * @return this course's lab sessions list (using arrayList structure to represent)
+	 * @return this course's lab sessions list (using ArrayList structure to represent)
 	 */
-	public ArrayList<Lab> getLabs() { return labs; }
+	public ArrayList<CourseComponent> getLabs() { return labs; }
 	
 	/**
 	 * Get the lectures list of this course
-	 * @return this course's lectures list (using arrayList structure to represent)
+	 * @return this course's lectures list (using ArrayList structure to represent)
 	 */
-	public ArrayList<Lecture> getLecs() { return lecs; }
+	public ArrayList<CourseComponent> getLecs() { return lecs; }
 	
 	/**
 	 * Get the students list of this course
-	 * @return this course's student list (using hashSet structure to represent)
+	 * @return this course's student list (using HashSet structure to represent)
 	 */
 	public HashSet<Student> getStudents() { return Students; }
 	
@@ -133,7 +133,7 @@ public class Course implements Serializable{
 	 */
 	public void createTut(int noOfTut, int capacity) {
 		for (int i=0; i<noOfTut; i++)
-			this.tuts.add(new Tutorial(this, this.tuts.size(), capacity));
+			this.tuts.add(new CourseComponent(this.tuts.size(), capacity, "tutorial"));
 		totalTutVacancies = noOfTut*capacity;
 	}
 	
@@ -144,7 +144,7 @@ public class Course implements Serializable{
 	 */
 	public void createLab(int noOfLab, int capacity) {
 		for (int i=0; i<noOfLab; i++)
-			this.labs.add(new Lab(this, this.labs.size(), capacity));
+			this.labs.add(new CourseComponent(this.labs.size(), capacity, "lab"));
 		totalLabVacancies = noOfLab*capacity;
 	}
 	
@@ -155,7 +155,7 @@ public class Course implements Serializable{
 	 */
 	public void createLec(int noOfLec, int capacity) {
 		for (int i=0; i<noOfLec; i++)
-			this.lecs.add(new Lecture(this, this.lecs.size(), capacity));
+			this.lecs.add(new CourseComponent(this.lecs.size(), capacity, "lecture"));
 		totalLecVacancies = noOfLec*capacity;
 	}
 	
@@ -263,8 +263,10 @@ public class Course implements Serializable{
 		//register student to the lab and add student to student list of this course
 		if (tuts.get(tutId).addStudent(student)) {
 			Students.add(student);
+			this.reduceTutVacancies();
 			return true;
 		}
+		System.out.println("No available vacancies for this class index\n");
 		return false;
 	}
 	
@@ -286,8 +288,10 @@ public class Course implements Serializable{
 		//register student to the lab and add student to student list of this course
 		if (labs.get(labId).addStudent(student)) {
 			Students.add(student);
+			this.reduceLabVacancies();
 			return true;
 		}
+		System.out.println("No available vacancies for this class index\n");
 		return false;
 	}
 	
@@ -310,8 +314,11 @@ public class Course implements Serializable{
 		//register student to the lecture and add student to student list of this course
 		if (lecs.get(lecId).addStudent(student)) {
 			Students.add(student);
+			System.out.println("Successfully register this student for the lecture index "+lecId+"\n");
+			this.reduceLecVacancies();
 			return true;
 		}
+		System.out.println("No available vacancies for this lecture index\n");
 		return false;
 	}
 	
