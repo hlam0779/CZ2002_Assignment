@@ -160,7 +160,7 @@ public class GradeRecord implements Serializable{
 		//calculate coursework grade
 		if (course.getWeightStructure() == 2 && ! updateCoursework())
 			return false;
-		else if ( ! alreadyEnterCourseworkGrade) {
+		else if ( course.getWeightStructure() == 1 && ! alreadyEnterCourseworkGrade) {
 			statusMessage = "Cannot compute overall grade, please enter the coursework grade first";
 			return false;
 		}
@@ -191,7 +191,7 @@ public class GradeRecord implements Serializable{
 		if (course.getWeightStructure() == 2) {
 			if (calOverallGrade())
 				return "Course: "+course+String.format("    AssignmentGrade (subWeight: %d%%): %.1f/100",(int) course.getAssignmentWeight(), assignment)+String.format("    ClassPariticipationGrade (subWeight: %d%%): %.1f/100",(int)course.getClassParticipationWeight(),classParticipation)+
-						String.format("    Coursework(%d%%): %.1f/100", course.getCourseworkWeight(), coursework)+String.format("    Exam(%d%%): %.1f/100",(int) course.getExamWeight(),exam)+String.format("    OverallGrade: %.1f/100", overallGrade);
+						String.format("    Coursework(%d%%): %.1f/100", (int) course.getCourseworkWeight(), coursework)+String.format("    Exam(%d%%): %.1f/100",(int) course.getExamWeight(),exam)+String.format("    OverallGrade: %.1f/100", overallGrade);
 			return "Course: "+course+"    status: "+statusMessage;
 		}
 		else if (calOverallGrade())
