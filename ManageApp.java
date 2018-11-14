@@ -433,7 +433,7 @@ public class ManageApp {
 		for (int i = 0; i < course.getLecs().size(); i++){
 			System.out.println("Index " + i);
 		}
-		System.out.printf("\n");
+		System.out.println();
 		
 		while (true) {		//Ask for input another lecture index if the lecture index has no vacancies or the index is invalid
 			
@@ -460,7 +460,7 @@ public class ManageApp {
 			for (int i = 0; i < course.getTuts().size(); i++){
 				System.out.println("Index " + i);
 			}
-			System.out.printf("\n");
+			System.out.println();
 			
 			while (true) {		//Ask for input another tutorial index if the tutorial index has no vacancies or the index is invalid
 				
@@ -486,7 +486,7 @@ public class ManageApp {
 		for (int i = 0; i < course.getTuts().size(); i++){
 			System.out.println("Index " + i);
 		}
-		System.out.printf("\n");
+		System.out.println();
 		
 		while (true) {		//Ask for input another lab index if the lab index has no vacancies or the index is invalid
 			
@@ -564,7 +564,11 @@ public class ManageApp {
 			else if(choice == 1) {
 				
 				//Input the lecture index to check vacancies
-				System.out.printf("Enter the lecture index you want to check (index from 0 to %d):\n", course.getLecs().size()-1);
+				System.out.println("Choose lecture index you want to check:");
+				for (int i = 0; i < course.getLecs().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.println();
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -591,7 +595,12 @@ public class ManageApp {
 				}
 				
 				//Input the tutorial index
-				System.out.printf("Enter the tutorial index you want to check (index from 0 to %d):\n", course.getTuts().size()-1);
+				System.out.println("Choose tutorial index you want to check:");
+				for (int i = 0; i < course.getTuts().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.println();
+
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -618,7 +627,12 @@ public class ManageApp {
 				}
 				
 				//Input lab index
-				System.out.printf("Enter the lab session index you want to check (index from 0 to %d):\n", course.getLabs().size()-1);
+				System.out.println("Choose lab index you want to check:");
+				for (int i = 0; i < course.getLabs().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.println();
+
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -701,7 +715,7 @@ public class ManageApp {
 				for (int i = 0; i < course.getLecs().size(); i++){
 					System.out.println("Index " + i);
 				}
-				System.out.printf("\n");
+				System.out.println();
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -742,7 +756,7 @@ public class ManageApp {
 				for (int i = 0; i < course.getTuts().size(); i++){
 					System.out.println("Index " + i);
 				}
-				System.out.printf("\n");
+				System.out.println();
 				int index;
 				
 				while (true) {		//Check for valid index
@@ -783,7 +797,7 @@ public class ManageApp {
 				for (int i = 0; i < course.getLabs().size(); i++){
 					System.out.println("Index " + i);
 				}
-				System.out.printf("\n");
+				System.out.println();
 				int index;
 				
 				while (true) {		//Check for valid index
