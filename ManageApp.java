@@ -674,7 +674,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				CourseComponent lecture = course.getLecs().get(index);
+				Lecture lecture = course.getLecs().get(index);
 				
 				//Check if no student registers for this lecture index
 				if (lecture.getStudents().size() == 0)
@@ -711,7 +711,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				CourseComponent tut = course.getTuts().get(index);
+				Tutorial tut = course.getTuts().get(index);
 				
 				//Check if no student registers for this tutorial index
 				if (tut.getStudents().size() == 0)
@@ -748,7 +748,7 @@ public class ManageApp {
 						scan.nextLine();
 					}
 				}
-				CourseComponent lab = course.getLabs().get(index);
+				Lab lab = course.getLabs().get(index);
 				
 				//Check if no student registers for this lab index
 				if (lab.getStudents().size() == 0)
