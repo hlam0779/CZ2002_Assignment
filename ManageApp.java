@@ -90,7 +90,21 @@ public class ManageApp {
 		
 		//Input student information to add to record
 		System.out.println("Enter student name:");
-		String name = scan.nextLine();
+		String name;
+		while (true) {
+			name = scan.nextLine();
+			boolean valid = true;
+			for (int i=0; i<name.length(); i++) {
+				if (Character.isDigit(name.charAt(i))) {
+					System.out.println("Invalid data entry, name cannot contain digits, please input again:");
+					valid = false;
+					break;
+				}
+			}
+			if (valid)
+				break;
+		}
+		
 		System.out.println("Enter matric Number:");
 		String matricNo = scan.nextLine();
 		
@@ -122,16 +136,28 @@ public class ManageApp {
 		//Input course information to add to the record
 		System.out.println("Enter course name:");
 		String name;
+		
 		while (true) {
 			name = scan.nextLine();
-			for (Course i: courseList.values()) {
-				if (name.equals(i.getName())) {
-					System.out.println("This course may already be inserted before since the same course name is found in the record\n");
-					return;
+			boolean valid = true;
+			for (int i=0; i<name.length(); i++) {
+				if (Character.isDigit(name.charAt(i))) {
+					System.out.println("Invalid data entry, name cannot contain digits, please input again:");
+					valid = false;
+					break;
 				}
 			}
-			break;
+			if (valid)
+				break;
 		}
+		
+		for (Course i: courseList.values()) {
+			if (name.equals(i.getName())) {
+				System.out.println("This course may already be inserted before since the same course name is found in the record\n");
+				return;
+			}
+		}
+		
 		System.out.println("Enter courseCode:");
 		String courseCode = scan.nextLine();
 		if (courseList.containsKey(courseCode)) {	//Check whether the same course has already be inserted before
