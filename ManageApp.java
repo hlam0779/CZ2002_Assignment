@@ -1399,6 +1399,7 @@ public class ManageApp {
 						System.out.println("GradeGroup       80-100     60-80     40-60     20-40     0-20     unknown");
 						System.out.printf( "Coursework(%%)    %-9.1f  %-8.1f  %-8.1f  %-8.1f  %-7.1f  %.1f\n", firstPercentage, secondPercentage, 
 																	thirdPercentage, fourthPercentage, fifthPercentage, unknown);
+						break;
 					case 4: System.out.println();
 						return;
 				}
