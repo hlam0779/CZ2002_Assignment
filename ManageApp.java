@@ -48,17 +48,18 @@ public class ManageApp {
 			System.out.println("9.Print course statistics");
 			System.out.println("10.Print student transcript");
 			System.out.println("11.Exit");
+			System.out.println("***********************************");
 			
 			while (true) {		//Check for valid choice
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice >11) {
-						System.out.println("Your choice must be between 1 and 11, please input again:");
+						System.out.println("Error: Invalid choice, please try again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, you must input an integer between 1 and 11, please input your choice again:");
+					System.out.println("Error: Invalid choice, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -96,7 +97,7 @@ public class ManageApp {
 			boolean valid = true;
 			for (int i=0; i<name.length(); i++) {
 				if (Character.isDigit(name.charAt(i))) {
-					System.out.println("Invalid data entry, name cannot contain digits, please input again:");
+					System.out.println("Error: Name cannot contains digits, please try again:");
 					valid = false;
 					break;
 				}
@@ -110,7 +111,7 @@ public class ManageApp {
 		
 		//Check if the student is already in the record
 		if (studentList.containsKey(matricNo)) {
-			System.out.println("This student may already be inserted before since the same matric number is found in the record\n");
+			System.out.println("Error: Duplicate student found in record\n");
 			return;
 		}
 		
@@ -119,7 +120,7 @@ public class ManageApp {
 		String major = scan.nextLine();
 		
 		studentList.put(matricNo,new Student(name,matricNo,major));
-		System.out.println("Successfully add this student to the record");
+		System.out.println("Success: Student added to record");
 		System.out.println("\nThe current student list:");
 		for (Student s: studentList.values()) {
 			System.out.println(s);
@@ -142,7 +143,7 @@ public class ManageApp {
 			boolean valid = true;
 			for (int i=0; i<name.length(); i++) {
 				if (Character.isDigit(name.charAt(i))) {
-					System.out.println("Invalid data entry, name cannot contain digits, please input again:");
+					System.out.println("Error: Name cannot contains digits, please try again:");
 					valid = false;
 					break;
 				}
@@ -153,7 +154,7 @@ public class ManageApp {
 		
 		for (Course i: courseList.values()) {
 			if (name.equals(i.getName())) {
-				System.out.println("This course may already be inserted before since the same course name is found in the record\n");
+				System.out.println("Error: Duplicate course name found in record\n");
 				return;
 			}
 		}
@@ -161,7 +162,7 @@ public class ManageApp {
 		System.out.println("Enter courseCode:");
 		String courseCode = scan.nextLine();
 		if (courseList.containsKey(courseCode)) {	//Check whether the same course has already be inserted before
-			System.out.println("This course may already be inserted before since the same course code is found in the record\n");
+			System.out.println("Error: Duplicate course code found in record\n");
 			return;
 		}
 		
@@ -187,7 +188,7 @@ public class ManageApp {
 			}
 			if (valid)
 				break;
-			else System.out.println("There is no professor whose name is "+profName+", please choose name from the above list:");
+			else System.out.println("Error: Prof "+profName+" not found, please try again:");
 		}
 		
 		//Input the course structure
@@ -202,10 +203,10 @@ public class ManageApp {
 					courseStructure = scan.nextInt();
 				else {
 					scan.nextLine();
-					throw new Exception("Invalid input, you must input an integer between 1 and 3");
+					throw new Exception("Error: Invalid choice, please try again:");
 				}
 				if (courseStructure<1 || courseStructure >3)
-					throw new Exception("Invalid choice, your choice must be between 1 and 3");
+					throw new Exception("Error: Invalid choice, please try again:");
 				break;
 			} catch (Exception e){
 				System.out.println(e.getMessage());
@@ -220,12 +221,12 @@ public class ManageApp {
 			try {
 				noOfLecs = scan.nextInt();
 				if (noOfLecs < 1) {
-					System.out.println("The number of lectures must be at least 1, please input again:");
+					System.out.println("Error: Number of lectures must be at least 1, please try again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input an integer, please input again:");
+				System.out.println("Error: Invalid input, please try again:");
 				scan.nextLine();
 			}
 		}
@@ -235,12 +236,12 @@ public class ManageApp {
 			try {
 				lecCapacity = scan.nextInt();
 				if (lecCapacity < 1) {
-					System.out.println("The capacity must be at least 1, please input again:");
+					System.out.println("Error: Capacity must be at least 1, please try again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input an integer, please input again:");
+				System.out.println("Error: Invalid input, please try again:");
 				scan.nextLine();
 			}
 		}
@@ -259,12 +260,12 @@ public class ManageApp {
 				try {
 					noOfTuts = scan.nextInt();
 					if (noOfTuts < 1) {
-						System.out.println("The number of tutorials must be at least 1, please input again:");
+						System.out.println("Error: Number of tutorials must be at least 1, please try again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must input an integer, please input again:");
+					System.out.println("Error: Invalid input, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -274,12 +275,12 @@ public class ManageApp {
 				try {
 					tutCapacity = scan.nextInt();
 					if (tutCapacity < 1) {
-						System.out.println("The capacity must be at least 1, please input again:");
+						System.out.println("Error: Capacity must be at least 1, please try again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must input an integer, please input again:");
+					System.out.println("Error: Invalid choice, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -298,12 +299,12 @@ public class ManageApp {
 				try {
 					noOfIds = scan.nextInt();
 					if (noOfIds < 1) {
-						System.out.println("The number of tutorials and lab sessions must be at least 1, please input again:");
+						System.out.println("Error: Number of tutorials and lab sessions must be at least 1, please try again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must input an integer, please input again:");
+					System.out.println("Error: Invalid input, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -313,12 +314,12 @@ public class ManageApp {
 				try {
 					capacity = scan.nextInt();
 					if (capacity < 1) {
-						System.out.println("The number of lectures must be at least 1, please input again:");
+						System.out.println("Error: Number of lectures must be at least 1, please try again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must input an integer, please input again:");
+					System.out.println("Error: Invalid input, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -339,17 +340,17 @@ public class ManageApp {
 			try {
 				weightStructure = scan.nextInt();
 				if (weightStructure > 2 || weightStructure <1) {
-					System.out.println("Invalid choice, your choice must be either 1 or 2");
+					System.out.println("Error: Invalid choice, please try again:");
 					continue;
 				}		
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, your choice must be either 1 or 2");
+				System.out.println("Error: Invalid input, please try again:");
 				scan.nextLine();
 			}
 			courseList.get(courseCode).setWeightStructure(weightStructure);
 			break;
 		}
-		System.out.println("Successfully add this course to the record");
+		System.out.println("Success: Course added to record");
 		System.out.println("\nThe current course list:");
 		for (Course c: courseList.values()) {
 			System.out.println(c);
@@ -364,13 +365,13 @@ public class ManageApp {
 		
 		//Check whether there is any student to register
 		if (studentList.size() == 0) {
-			System.out.println("There is no students in the record to register, please add students first\n");
+			System.out.println("Error: Student record empty, please add students first\n");
 			return;
 		}
 		
 		//Check whether there is any course to register
 		if(courseList.size() == 0) {
-			System.out.println("There is no courses in the record to register, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -386,7 +387,7 @@ public class ManageApp {
 		while (true) {
 			matricNo = scan.nextLine();
 			if (! studentList.containsKey(matricNo)) {
-				System.out.printf("There is no student whose matric number is %s, please choose from the above list and input again:\n", matricNo);
+				System.out.printf("Error: Matric number %s not found, please input again:\n", matricNo);
 				continue;
 			}
 			break;
@@ -403,7 +404,7 @@ public class ManageApp {
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please choose from the above list and input again:\n", courseCode);
+				System.out.printf("Error: Course code %s not found, please input again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -412,13 +413,13 @@ public class ManageApp {
 		
 		//Check whether the student has already registered for this course
 		if (course.getStudents().contains(student)) {
-			System.out.println("This student has successfully registered this course before\n");
+			System.out.println("Error: Course already registered\n");
 			return;
 		}
 		
 		//Check vacancies and return if the course has no available vacancies
 		if (! course.hasVacancies()) {
-			System.out.println("This course has no more vacancies\n");
+			System.out.println("Error: Course has zero vacancies\n");
 			return;
 		}
 		
@@ -428,7 +429,11 @@ public class ManageApp {
 		 */
 		
 		//Input the lecture index to register
-		System.out.printf("Enter the desired lecture index for this course (index from 0 to %d):\n", course.getLecs().size()-1);
+		System.out.println("Choose lecture index for this course:");
+		for (int i = 0; i < course.getLecs().size(); i++){
+			System.out.println("Index " + i);
+		}
+		System.out.printf("\n");
 		
 		while (true) {		//Ask for input another lecture index if the lecture index has no vacancies or the index is invalid
 			
@@ -440,7 +445,7 @@ public class ManageApp {
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid index, please choose a valid index:");
+				System.out.println("Error: Invalid index, please choose a valid index:");
 				scan.nextLine();
 			}
 		}
@@ -451,7 +456,11 @@ public class ManageApp {
 		
 		//Input the tutorial index to register if this course only has lecture and tutorial
 		if (course.getCourseStructure() == 2) {
-			System.out.printf("Enter the desired tutorial index for this course (index from 0 to %d):\n", course.getTuts().size()-1);
+			System.out.println("Choose tutorial index for this course:");
+			for (int i = 0; i < course.getTuts().size(); i++){
+				System.out.println("Index " + i);
+			}
+			System.out.printf("\n");
 			
 			while (true) {		//Ask for input another tutorial index if the tutorial index has no vacancies or the index is invalid
 				
@@ -461,10 +470,10 @@ public class ManageApp {
 						System.out.println("Please choose another index:");
 						continue;
 					}
-					System.out.println("Successfully register this student for tutorial index "+tutId+"\n");
+					System.out.println("Success: Tutorial index "+tutId+" registed for this student\n");
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid index, please choose a valid index:");
+					System.out.println("Error: Invalid index, please choose a valid index:");
 					scan.nextLine();
 				}
 			}
@@ -473,7 +482,11 @@ public class ManageApp {
 		
 		
 		//Input the course index to register
-		System.out.printf("Enter the desired tutorial/lab index for this course (index from 0 to %d):\n", course.getTuts().size()-1);
+		System.out.println("Choose tutorial/lab index for this course:");
+		for (int i = 0; i < course.getTuts().size(); i++){
+			System.out.println("Index " + i);
+		}
+		System.out.printf("\n");
 		
 		while (true) {		//Ask for input another lab index if the lab index has no vacancies or the index is invalid
 			
@@ -484,10 +497,10 @@ public class ManageApp {
 					continue;
 				}
 				student.registerLab(courseCode, courseIndex);
-				System.out.println("Successfully register this student for tutorial/lab index "+ courseIndex+"\n");
+				System.out.println("Success: Tutorial/Lab index "+ courseIndex+" registed for this student\n");
 				break;
 			}catch (InputMismatchException e){
-				System.out.println("Invalid index, please choose a valid index:");
+				System.out.println("Error :Invalid index, please choose a valid index:");
 				scan.nextLine();
 			}
 		}
@@ -500,7 +513,7 @@ public class ManageApp {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no course in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -516,7 +529,7 @@ public class ManageApp {
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please choose from the list above and input again:\n", courseCode);
+				System.out.printf("Error: Course code %s not found, please input again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -537,12 +550,12 @@ public class ManageApp {
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice >4) {
-						System.out.println("your choice must be between 1 and 4, please input another choice:");
+						System.out.println("Error: Invalid choice, please input again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, please input again:");
+					System.out.println("Error: Invalid choice, please try again:");
 					scan.nextLine();
 				}
 			}
@@ -558,12 +571,12 @@ public class ManageApp {
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLecs().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid input, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -573,7 +586,7 @@ public class ManageApp {
 				
 				//Check if this course has tutorial classes
 				if (course.getCourseStructure() == 1) {
-					System.out.println("This course has no tutorials");
+					System.out.println("Error: This course has no tutorials");
 					continue;
 				}
 				
@@ -585,12 +598,12 @@ public class ManageApp {
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getTuts().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid input, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -600,7 +613,7 @@ public class ManageApp {
 				
 				//Check if this course has lab sessions
 				if (course.getCourseStructure() != 3) {
-					System.out.println("This course has no lab sessions\n");
+					System.out.println("Error: This course has no lab sessions\n");
 					continue;
 				}
 				
@@ -612,12 +625,12 @@ public class ManageApp {
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLabs().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid input, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -634,7 +647,7 @@ public class ManageApp {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -650,7 +663,7 @@ public class ManageApp {
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please choose the list above and input again:\n", courseCode);
+				System.out.printf("Error: Course code %s not found, please input again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -672,31 +685,35 @@ public class ManageApp {
 				try {
 					choice = scan.nextInt();
 					if (choice < 1 || choice >4) {
-						System.out.println("your choice must be between 1 and 4, please input another choice:");
+						System.out.println("Error: Invalid choice, please input again:");
 						continue;
 					}
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, please input again:");
+					System.out.println("Error: Invalid choice, please input again:");
 					scan.nextLine();
 				}
 			}
 			if (choice == 1) {
 				
 				//Input the lecture index to print student list
-				System.out.printf("Enter the lecture index you want to print the student list (index from 0 to %d):\n", course.getLecs().size()-1);
+				System.out.println("Choose lecture index for this course:");
+				for (int i = 0; i < course.getLecs().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.printf("\n");
 				int index;
 				
 				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLecs().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid index, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -721,19 +738,23 @@ public class ManageApp {
 				}
 				
 				//Input tutorial index to print student list
-				System.out.printf("Enter the tutorial index you want to print the student list (index from 0 to %d):\n", course.getTuts().size()-1);
+				System.out.println("Choose tutorial index for this course:");
+				for (int i = 0; i < course.getTuts().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.printf("\n");
 				int index;
 				
 				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getTuts().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid index, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -758,19 +779,23 @@ public class ManageApp {
 				}
 				
 				//Input lab index
-				System.out.printf("Enter the lab index you want to print the student list (index from 0 to %d):\n", course.getLabs().size()-1);
+				System.out.println("Choose lab index for this course:");
+				for (int i = 0; i < course.getLabs().size(); i++){
+					System.out.println("Index " + i);
+				}
+				System.out.printf("\n");
 				int index;
 				
 				while (true) {		//Check for valid index
 					try {
 						index = scan.nextInt();
 						if (index<0 || index>= course.getLabs().size()) {
-							System.out.println("There is no such index, please choose another index:");
+							System.out.println("Error: Invalid index, please input again:");
 							continue;
 						}
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid input, please input again:");
+						System.out.println("Error: Invalid input, please input again:");
 						scan.nextLine();
 					}
 				}
@@ -796,7 +821,7 @@ public class ManageApp {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -813,7 +838,7 @@ public class ManageApp {
 		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (!courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please choose from the list above and input again:\n", courseCode);
+				System.out.printf("Error: Course code %s not found, please input again:", courseCode);
 				continue;
 			}
 			break;
@@ -830,14 +855,14 @@ public class ManageApp {
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice>2) {
-						System.out.println("Your choice must be either 1 or 2, please choose again:");
+						System.out.println("Error: Invalid choice, please input again");
 						continue;
 					}
 					if (choice == 2)
 						return;
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, you must input 1 or 2, please choose again:");
+					System.out.println("Error: Invalid choice, please input again:");
 					scan.nextLine();
 				}
 			}
@@ -851,12 +876,12 @@ public class ManageApp {
 			try {
 				courseWorkWeight = scan.nextDouble();
 				if (courseWorkWeight<=0 || courseWorkWeight>=100) {
-					System.out.println("The weight of coursework must be in range (0-100) (exclude 0 and 100), please input again:");
+					System.out.println("Error: The weight of coursework must be in range (0-100) (exclude 0 and 100), please input again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input the weight again:");
+				System.out.println("Error: Invalid input, please input the weight again:");
 				scan.nextLine();
 			}
 		}
@@ -864,7 +889,7 @@ public class ManageApp {
 		
 		//Check if this course's coursework has sub-component weightage or not
 		if (course.getWeightStructure() == 1) {
-			System.out.println("\nSuccessfully set assessment weight of coursework and exam\n");
+			System.out.println("\nSuccess: Assessment weightage of coursework and exam set\n");
 			return;
 		}
 		//Input weight for assignment
@@ -875,17 +900,17 @@ public class ManageApp {
 			try {
 				assignmentWeight = scan.nextDouble();
 				if (assignmentWeight<=0 || assignmentWeight>=100) {
-					System.out.println("The weight of assignment must be in range (0-100) (exclude 0 and 100), please input again");
+					System.out.println("Error: The weight of assignment must be in range (0-100) (exclude 0 and 100), please input again");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, please input the weight again:");
+				System.out.println("Error: Invalid input, please input the weight again:");
 				scan.nextLine();
 			}
 		}
 		course.setAssignmentWeight(assignmentWeight);
-		System.out.println("\nSuccessfully set assessment weight of coursework, exam and coursework's component\n");
+		System.out.println("\nSuccess: Assessment weightage of coursework, exam and coursework's component set\n");
 	}
 	
 	/**
@@ -895,13 +920,13 @@ public class ManageApp {
 		
 		//Check whether there is any student in the record
 		if (studentList.size() == 0) {
-			System.out.println("There is no students in the record, please add students first\n");
+			System.out.println("Error: Student record empty, please add students first\n");
 			return;
 		}
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -917,7 +942,7 @@ public class ManageApp {
 		while (true) {
 			matricNo = scan.nextLine();
 			if (!studentList.containsKey(matricNo)) {
-				System.out.printf("There is no student whose matric number is %s, please choose from the list above and input again:\n", matricNo);
+				System.out.printf("Error: Matric number %s not found, please input again:\n", matricNo);
 				continue;
 			}
 			break;
@@ -927,7 +952,7 @@ public class ManageApp {
 		HashMap<String, GradeRecord> transcript = student.getTranscript();
 		//Check if there is any valid course to enter mark
 		if (transcript.size() == 0) {
-			System.out.println("This student has not registered any course before, please register course for this student first");
+			System.out.println("Error: This student has not registered any course, please register course for this student first");
 			return;
 		}
 		
@@ -943,7 +968,7 @@ public class ManageApp {
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!transcript.containsKey(courseCode)) {
-				System.out.printf("This student might have not registered for course whose course code is %s, please choose from the above list:\n", courseCode);
+				System.out.printf("Error: This student has not registered course %s, please choose again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -970,14 +995,14 @@ public class ManageApp {
 					try {
 						choice = scan.nextInt();
 						if (choice<1 || choice>2) {
-							System.out.println("Your choice must be either 1 or 2, please choose again:");
+							System.out.println("Error: Invalid choice, please choose again:");
 							continue;
 						}
 						if (choice == 2)
 							return;
 						break;
 					} catch (InputMismatchException e) {
-						System.out.println("Invalid choice, you must input 1 or 2, please choose again:");
+						System.out.println("Error: Invalid choice, please choose again:");
 						scan.nextLine();
 					}
 				}
@@ -988,17 +1013,17 @@ public class ManageApp {
 				try {
 					grade = scan.nextDouble();
 					if (grade<0 || grade >100) {
-						System.out.println("Invalid input, the grade must be between 0 and 100, please input again:");
+						System.out.println("Error: Invalid input, the grade must be between 0 and 100, please input again:");
 						continue;
 					}
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must input a real number, please input again:");
+					System.out.println("Error: Invalid input, please input again:");
 					scan.nextLine();
 				}
 				break;
 			}
 			gradeRecord.setCoursework(grade);
-			System.out.println("Successfully enter this course's coursework grade for this student\n");
+			System.out.println("Success: Coursework grade recorded\n");
 			return;
 		}
 		
@@ -1012,14 +1037,14 @@ public class ManageApp {
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice>2) {
-						System.out.println("Your choice must be either 1 or 2, please choose again:");
+						System.out.println("Error: Invalid choice, please choose again:");
 						continue;
 					}
 					if (choice == 2)
 						return;
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, you must input 1 or 2, please choose again:");
+					System.out.println("Error: Invalid choice, please choose again:");
 					scan.nextLine();
 				}
 			}
@@ -1031,12 +1056,12 @@ public class ManageApp {
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
-					System.out.println("Invalid grade, the grade must be between 0 and 100, please input again:");
+					System.out.println("Error: Invalid input, the grade must be between 0 and 100, please input again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input a real number, please input again:");
+				System.out.println("Error: Invalid input, please input again:");
 				scan.nextLine();
 			}
 		}
@@ -1049,17 +1074,17 @@ public class ManageApp {
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
-					System.out.println("Invalid grade, the grade must be between 0 and 100, please input again:");
+					System.out.println("Error: Invalid input, the grade must be between 0 and 100, please input again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input a real number, please input again:");
+				System.out.println("Error: Invalid input, please input again:");
 				scan.nextLine();
 			}
 		}
 		gradeRecord.setClassParticipation(grade);
-		System.out.println("Successfully enter this course's coursework components grade for this student\n");
+		System.out.println("Success: Coursework components grade recorded\n");
 	}
 	
 	/**
@@ -1069,12 +1094,12 @@ public class ManageApp {
 		
 		//Check whether there is any student in the record
 		if (studentList.size() == 0) {
-			System.out.println("There is no students in the record, please add students first\n");
+			System.out.println("Error: Student record empty, please add students first\n");
 			return;
 		}
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -1091,7 +1116,7 @@ public class ManageApp {
 		while (true) {		//Check for valid matric number
 			matricNo = scan.nextLine();
 			if (!studentList.containsKey(matricNo)) {
-				System.out.printf("There is no student whose matric number is %s, please from the list above and input again:\n", matricNo);
+				System.out.printf("Error: Matric number %s not found, please input again:\n", matricNo);
 				continue;
 			}
 			break;
@@ -1117,7 +1142,7 @@ public class ManageApp {
 		while (true) {
 			courseCode = scan.nextLine();
 			if (!transcript.containsKey(courseCode)) {
-				System.out.printf("This student might have not registered for course whose course code is %s, please choose from the above list:\n", courseCode);
+				System.out.printf("Error: This student has not registered course %s, please choose again:\n", courseCode);
 				continue;
 			}
 			break;
@@ -1134,14 +1159,14 @@ public class ManageApp {
 				try {
 					choice = scan.nextInt();
 					if (choice<1 || choice>2) {
-						System.out.println("Your choice must be either 1 or 2, please choose again:");
+						System.out.println("Error: Invalid choice, please choose again:");
 						continue;
 					}
 					if (choice == 2)
 						return;
 					break;
 				} catch (InputMismatchException e) {
-					System.out.println("Invalid choice, you must input 1 or 2, please choose again:");
+					System.out.println("Error: Invalid choice, please choose again:");
 					scan.nextLine();
 				}
 			}
@@ -1155,17 +1180,17 @@ public class ManageApp {
 			try {
 				grade = scan.nextDouble();
 				if (grade<0 || grade>100) {
-					System.out.println("Invalid grade, the grade must be between 0 and 100, please input again:");
+					System.out.println("Error: Invalid input, the grade must be between 0 and 100, please input again:");
 					continue;
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid input, you must input a real number, please input again:");
+				System.out.println("Error: Invalid input, please input again:");
 				scan.nextLine();
 			}
 		}
 		gradeRecord.setExam(grade);
-		System.out.println("Successfully enter this course's exam grade of this student\n");
+		System.out.println("Success: Course's exam grade recorded\n");
 	}
 	
 	/**
@@ -1176,7 +1201,7 @@ public class ManageApp {
 		
 		//Check whether there is any course in the record
 		if (courseList.size() == 0) {
-			System.out.println("There is no courses in the record, please add courses first\n");
+			System.out.println("Error: Course record empty, please add courses first\n");
 			return;
 		}
 		
@@ -1192,7 +1217,7 @@ public class ManageApp {
 		while (true) {		//Check for valid course code
 			courseCode = scan.nextLine();
 			if (! courseList.containsKey(courseCode)) {
-				System.out.printf("There is no course whose course code is %s, please choose from the list above and input again:\n", courseCode);
+				System.out.printf("Error: Course code %s not found, please input again:", courseCode);
 				continue;
 			}
 			break;
@@ -1256,7 +1281,7 @@ public class ManageApp {
 				
 				choice = scan.nextInt();
 				if (choice < 1 || choice > 4){
-					System.out.println("your choice must be between 1 and 4, please input again:");
+					System.out.println("Error: Invalid choice, please input again:");
 					continue;
 
 				}
@@ -1364,7 +1389,7 @@ public class ManageApp {
 						return;
 				}
 			} catch (InputMismatchException e){
-				System.out.println("Invalid choice, your choice must be Integer, please input again:");
+				System.out.println("Error: Invalid choice, please input again:");
 				scan.nextLine();
 			}
 		}
@@ -1377,7 +1402,7 @@ public class ManageApp {
 		scan.nextLine();
 		//Check if there is any student in the record
 		if (studentList.size() == 0) {
-			System.out.println("There is no student in the record, please add student first:");
+			System.out.println("Error: Student record empty, please add students first");
 			return;
 		}
 		
@@ -1391,7 +1416,7 @@ public class ManageApp {
 		String matricNo = scan.nextLine();
 		
 		while (!studentList.containsKey(matricNo)) {		//Check for valid matric number
-			System.out.printf("There is no student whose matric number is %s, please choose from the list above and input again:\n", matricNo);
+			System.out.printf("Error: Matric number %s not found, please input again:\n", matricNo);
 			matricNo = scan.nextLine();
 		}
 		
