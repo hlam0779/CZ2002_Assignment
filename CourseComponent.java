@@ -58,7 +58,7 @@ public class CourseComponent implements Serializable{
 	/**
 	 * Add a student to the student list of this class 
 	 * Return true if successfully add the student to this course and false otherwise
-	 * @param student  student that need to be registered for this class
+	 * @param s  student that need to be registered for this class
 	 * @return boolean value indicating the register status
 	 */
 	public boolean addStudent(Student s) {
