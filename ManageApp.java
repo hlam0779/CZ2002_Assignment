@@ -1178,28 +1178,6 @@ public class ManageApp {
 		 * the overall grade, exam grade and coursework grade percentage
 		 */
 		Course course = courseList.get(courseCode);
-		//System.out.println("Name: "+course.getName()+"    CourseCode: "+course.getCourseCode()+"    Coordinator: Prof "+course.getCoordinator());
-		//System.out.println("Total number of students taken this course: "+course.getStudents().size());
-		//System.out.println("Total vacancies: "+course.getVancancies());
-		//if (course.getCourseStructure() == 1) {
-			//System.out.println("This course only has lectures");
-			//System.out.printf("Number of lectures: %-9d",course.getLecs().size());
-			//System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
-		//} else if(course.getCourseStructure() == 2) {
-			//System.out.println("This course only has lectures and tutorials");
-			//System.out.printf("Number of lectures: %-9d",course.getLecs().size());
-			//System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
-			//System.out.printf("Number of tutorials: %-8d",course.getTuts().size());
-			//System.out.println("Tutorial capacity: "+course.getTuts().get(0).getCapacity());
-		//} else {
-			//System.out.println("This course has lectures, tutorials and lab sessions");
-			//System.out.printf("Number of lectures: %-9d",course.getLecs().size());
-			//System.out.println("Lecture capacity: "+course.getLecs().get(0).getCapacity());
-			//System.out.printf("Number of tutorials: %-8d",course.getTuts().size());
-			//System.out.println("Tutorial capacity: "+course.getTuts().get(0).getCapacity());
-			//System.out.printf("Number of lab sessions: %-5d",course.getLabs().size());
-			//System.out.println("Lab capacity: "+course.getLabs().get(0).getCapacity());
-		//}
 		
 		HashSet<Student> students = course.getStudents();
 		if (students.size() == 0) {
